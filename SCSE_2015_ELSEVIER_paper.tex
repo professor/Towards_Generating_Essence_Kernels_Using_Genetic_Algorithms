@@ -93,7 +93,7 @@
 
 
 
-\journal{SCSE 2014}
+\journal{SCSE 2015}
 
 \begin{document}
 
@@ -120,7 +120,7 @@ Objective: Optimize candidate replacement kernels by using a fitness function ba
 
 Method: Using genetic programming, the kernel genotype will be represented as a collection of linear state machines each with a collection of unique checklist items. Operations to evolve the genotypes include randomly moving checklist items, splitting states, and deleting states by moving their checklist items to other states. 
 
-Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence Kernel.
+Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence Kernel. Reducing the Essence Kernel from seven alphas to one alpha results in higher scores.
 
 Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
 
@@ -147,42 +147,41 @@ The SEMAT community created Essence as a universal framework for any software en
 
 The Essence kernel is composed of a set of alphas, alpha states, and alpha state checklist items. The Essence kernel defines different characteristics or dimensions of a software project as an ``alpha.'' The seven alphas are \textbf{Stakeholders}, \textbf{Opportunity}, \textbf{Requirements}, \textbf{Software System}, \textbf{Team}, \textbf{Way of Working}, and \textbf{Work}. Essence decomposes each of these alphas into a set of states that represent a simple linear state machine as shown in Figure \ref{StateMachine}. For example, the \textbf{Requirements} alpha advances through the states \textit{Conceived}, \textit{Bounded}, \textit{Coherent}, \textit{Acceptable}, \textit{Addressed}, and \textit{Fulfilled.} Each state has a checklist or set of goals. To achieve a state, the project must satisfy every checklist item for that state. \cite{OMGStandard} 
  
-\begin{figure}[ht]
-\includegraphics[scale=0.34]{kernel_images/StateMachineRequirements}
+\begin{figure}[h]
+\includegraphics[width=5.4in]{kernel_images/StateMachineRequirements}
 \caption{Kernel's linear state machine for Requirements alpha}\label{StateMachine}
 \end{figure}
 
-
-%I have finished research in evaluating the Project Monitoring and Steering approach, Green-lighting Practicum projects and compared Essence Reflection meetings to Agile Reflection meetings. For evaluating the Project Monitoring and Steering approach a two semester field study involving quantitative and qualitative data collection revealed the value of the SEMAT Essence approach for a team-based project course. \cite{ICSE2014} The Essence kernel provides mechanisms for monitoring progress, steering projects, and routine team reflection, in a ``simple, lightweight, non-prescriptive and method-agnostic'' fashion \cite{ICSE2014}. The approach provides substantial value during project initiation. I applied the Green-lighting approach for two semesters to identify necessary improvements in CMU's Request for Proposal process \cite{ICSE2015}.
-
-When the SEMAT community created the Essence Kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. 
+When the SEMAT community created the Essence Kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
 
 During the Spring 2014 and Summer 2014 semesters, graduate software engineering students at Carnegie Mellon University in Silicon Valley recorded their progress during their software engineering practicum course. Each team recorded which checklist items the team accomplished during their weekly Essence Reflection meetings. We propose to leverage this data to both refine the existing Essence Kernel as well as evaluate any possible candidate kernels. 
 
-\textbf{Goal 1:} Generate an alternative Essence Kernel directly from empirical data via a genetic algorithm. The current Essence Kernel is composed of seven Alphas that group checklist items around logical concepts. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
-
-\textbf{Goal 2:} Using a genetic algorithm, make small incremental improvements to the Essence Kernel.
+% \textbf{Goal 2:} Using a genetic algorithm, make small incremental improvements to the Essence Kernel.
 
 \section{Experiment Planning}
-\subsection{Optimization Application}
+\subsection{Optimization Goal}
 \label{Optimization Application}
-The optimization problem of \textbf{Goal 1} means finding a single better candidate grounded in the data as described in Table~\ref{Goal of Program}. This is not a real time problem such as stock market analysis requiring highly performing input to output calculation.
+The goal is the optimization of candidate kernels using a fitness function based on empirical data in order to create an alternative Essence Kernel. This is not a real time problem such as stock market analysis requiring highly performing input to output calculation.
+
+% The optimization problem of \textbf{Goal 1} means finding a single better candidate grounded in the data as described in Table~\ref{Goal of Program}. 
+
+\subsection{Genotype Data Structure}
 
 Creating a candidate kernel requires a permutation of 148 checklist items into states in different alphas, optimized by a fitness function.
 
-\begin{table}[h]
-\caption{Genetic Algorithm's Purpose}
-\label{Goal of Program}
-\label{Goal}
-\centering
-\begin{tabular}{|p{0.80in}|p{2.30in}|}
-\hline
-{Goal:}  & {The optimization of} \\ \hline
-{Input:} & {candidate kernels}  \\ \hline
-{Model:} & {using a fitness function based on empirical data and number of states} \\ \hline
-{Output:} & {in order to create the “best” kernel} \\ \hline
-\end{tabular}
-\end{table}
+% \begin{table}[h]
+% \caption{Genetic Algorithm's Purpose}
+% \label{Goal of Program}
+% \label{Goal}
+% \centering
+% \begin{tabular}{|p{0.80in}|p{2.30in}|}
+% \hline
+% {Goal:}  & {The optimization of} \\ \hline
+% {Input:} & {candidate kernels}  \\ \hline
+% {Model:} & {using a fitness function based on empirical data} \\ \hline
+% {Output:} & {in order to create the “best” kernel} \\ \hline
+% \end{tabular}
+% \end{table}
 
 The first order of business is to determine the data structure for the genetic algorithm.
 
@@ -234,7 +233,7 @@ Once all of the offspring are created, the code implements ``comma survivor sele
 \caption{Evolutionary Algorithm Technical Summary}
 \label{TechnicalSummary}
 \centering
-\begin{tabular}{|p{0.80in}|p{2.30in}|}
+\begin{tabular}{|p{1.70in}|p{4.30in}|}
 \hline
 {Type}  & {Genetic Programming} \\ \hline
 {Representation} & {Collection of State Cards which are a collection of checklist items}  \\ \hline
@@ -250,7 +249,7 @@ Once all of the offspring are created, the code implements ``comma survivor sele
 
 \section{Fitness Functions}
 
-Since there is no prior work describing how to evaluate candidate kernels, we created two fitness functions for the purpose of exploring candidate evaluations called Partial Ordering and Completion fitness functions. After discussing the empirical data representation, this paper will describe the fitness functions in detail. 
+Since there is no prior work describing how to evaluate candidate kernels, we created two fitness functions for the purpose of exploring candidate evaluations called Partial Ordering and Completion fitness functions. \sout{After discussing the empirical data representation, this paper will describe the fitness functions in detail.} 
 
 \subsection{Understanding the data}
 
@@ -269,8 +268,6 @@ Week 3: {1, 10, 21}
 
 \subsection{Partial Ordering Fitness Function}
 When considering a given week's worth of data for a team, the Partial Ordering fitness function compares the checklist items that were done during that week with the ones that were done before and after. The fitness function rewards candidates that match the partial ordering of the empirical data. During each week, the fitness function pairwise considers each accomplished checklist with all of its predecessors and successors. 
-
-
 % Do not delete, include in phd.
 % \subsubsection{Rationale}
 % While we know that these checklist items were accomplished during the same week, we do not know if accomplishing the checklist items are correlated. It could be the case that many different events happened during the week to cause different checklist items to be accomplished. Consider the different cases about what can happen with the Essence States. 
@@ -306,40 +303,24 @@ Whenever the model correctly represents the empirical data, it earns a point. Ca
 
 \begin{figure}[!htb]
 \begin{verbatim}
-# Compare earlier checklists (5, 8)
-# against current week
+# Compare earlier checklists (5, 8)     # Compare later checklists (1, 10, 21)
+# against current week                  # against current week
 
-5 before? 6 => yes
-8 before? 6 => no
-
-5 before? 7 => yes
-8 before? 7 => no
-
-5 before? 11 => yes
-8 before? 11 => yes
-
-5 before? 20 => yes
-8 before? 20 => yes
-
-# Compare later checklists (1, 10, 21)
-# against current week
-
-6 before? 1 => no
-6 before? 10 => yes
-6 before? 21 => yes
-
-7 before? 1 => no
-7 before? 10 => yes
-7 before? 21 => yes
-
-11 before? 1 => no
-11 before? 10 => yes
-11 before? 21 => yes
-
-20 before? 1 => no
-20 before? 10 => yes
-20 before? 21 => yes
-
+5 before? 6 => yes                      6 before? 1 => no
+8 before? 6 => no                       6 before? 10 => yes
+                                        6 before? 21 => yes
+5 before? 7 => yes                  
+8 before? 7 => no                       7 before? 1 => no
+                                        7 before? 10 => yes
+5 before? 11 => yes                     7 before? 21 => yes
+8 before? 11 => yes                     
+                                        11 before? 1 => no 
+5 before? 20 => yes                     11 before? 10 => yes
+8 before? 20 => yes                     11 before? 21 => yes
+                                        
+                                        20 before? 1 => no
+                                        20 before? 10 => yes
+                                        20 before? 21 => yes
 Score: 14 / 20 for week 2
 \end{verbatim}
  \caption{Partial Ordering Evaluation Example for Week 2}
@@ -372,7 +353,7 @@ evaluate(candidateSolution)
 Since generated candidates can not represent all empirical data perfectly, the ideal fitness function rewards candidates that fit the data well. With enough empirical data, we expect there to be common patterns amongst teams as teams complete software projects. The ideal fitness function rewards models that represent common flows through the Essence states.
 
 \subsection{Completion Fitness Function}
-The Completion fitness function assigns points when checklists are done in the right order. Just like the Essence kernel requires all checklist items to be accomplished before the states is achieved, the Completion fitness only scores points when all checklists must be done on a card before progressing to future cards in the same alpha. The Completeness fitness function measures how perfectly the candidate matches the empirical data. 
+The Completion fitness function assigns points when checklists are done in the right order. Just like the Essence kernel requires all checklist items to be accomplished before the states is achieved, the Completion fitness only awards points when all checklists are done on a card before progressing to future cards in the same alpha. The Completeness fitness function measures how perfectly the candidate matches the empirical data. 
 
 % \begin{lstlisting}[language=C,frame=single,caption=Psuedocode for Completion Fitness Function,label=psuedocodeCompletion]
 % For each team’s data, the individual scores 1 point for each transition of checklist items they correctly represent. If a team does not achieve a state card, future checklists in that alpha do not count
@@ -390,7 +371,7 @@ In order to optimize the initial conditions of the genetic algorithm, we first n
 \begin{itemize}
 \item How does the number of alphas affect the fitness scores?
 \item How do the mutation operators affect the fitness scores?
-\item How does the algorithm utilize states?
+% \item How does the algorithm utilize states?
 \end{itemize}
 
 \subsection{How does the number of alphas affect the fitness scores?}
@@ -446,7 +427,7 @@ Given this result, the genetic algorithm challenges us to consider the unthinkab
 As another experiment, we ran 40 runs for five generations to see the impact of each operator on fitness score. By limiting to the random early generations, there is still plenty of opportunity for large changes in fitness. During each run, the program records the fitness differential before and after applying an operator. Figure ~\ref{OperatorsPartialOrdering} plots the distribution of fitness deltas per mutation operator.
 
 \begin{figure}[ht]
-\includegraphics[scale=0.37]{images/operator_analysis_partial_order_first_5_gens}
+\includegraphics[width=4.0in]{images/operator_analysis_partial_order_first_5_gens}
 \caption{Mutation Operators Effect on Fitness Scores for Partial Ordering}
 \label{OperatorsPartialOrdering}
 \end{figure}
@@ -460,27 +441,25 @@ As another experiment, we ran 40 runs for five generations to see the impact of 
 
 The mean of all of these mutation operators is slightly negative. As with most genetic algorithms, applying any operator can cause a fitness score decrease and the offspring will eventually be discarded when the population surpasses it.
 
-\subsection{How does the algorithm utilize states?}
+% \subsection{How does the algorithm utilize states?}
 
-Partial Ordering maintains a consistent number of states over time. Figure ~\ref{NumberOfStatesPartialOrdering} illustrates how a population utilizes the number of states when constrained to four alphas. The randomly created initial population ranges from 23 to 38 states and evolves to use roughly 25 to 30 states through out its generations. A stable number of states, as opposed to an infinitely growing number of states, is a desirable property for a fitness function. 
+% Partial Ordering maintains a consistent number of states over time. Figure ~\ref{NumberOfStatesPartialOrdering} illustrates how a population utilizes the number of states when constrained to four alphas. The randomly created initial population ranges from 23 to 38 states and evolves to use roughly 25 to 30 states through out its generations. A stable number of states, as opposed to an infinitely growing number of states, is a desirable property for a fitness function. 
 
-\begin{figure}[ht]
-\includegraphics[scale=0.6]{images/number_of_states_partial_ordering}
-\caption{Number of States Fitness Analysis for Partial Ordering}
-\label{NumberOfStatesPartialOrdering}
-\end{figure}
+% \begin{figure}[ht]
+% \includegraphics[scale=0.6]{images/number_of_states_partial_ordering}
+% \caption{Number of States Fitness Analysis for Partial Ordering}
+% \label{NumberOfStatesPartialOrdering}
+% \end{figure}
 
-% The completion fitness function prefers to grow the kernel by adding more and more states.
-
-\section{Best Generated Candidate Kernels}
+\section{Best Generated Candidate Kernel}
 
 Given the analysis from the previous section, namely that the Partial Ordering fitness function prefers smaller number of alphas, the best scoring candidates emerge quickly when starting with only a single alpha. Figure ~\ref{BestResultsPartialOrdering} shows the best, average, and worst fitness scores over 500 generations for 40 runs. (These 40 runs completed in 12.65 hours.) The graph also plots the fitness score of the original kernel.
 
 The original kernel scores 13,372. The best generated kernel scores 85,122. For the Partial Ordering fitness function, the genetic algorithm had little difficulty in finding random solutions that score higher than the original kernel. The original kernel is optimized for human understanding and places 148 checklist items into logical sequences around themed alphas where as the candidate kernels are optimized around how teams actually flow through the checklist items.
 
 \begin{figure*}[ht]
-\includegraphics[scale=0.74]{images/best_results_partial_ordering_500gens_40runs}
-\caption{Best Results for PartialOrdering}
+\includegraphics[width=6.25in]{images/best_results_partial_ordering_500gens_40runs}
+\caption{Fitness Scores using Partial Ordering}
 \label{BestResultsPartialOrdering}
 \end{figure*}
 
@@ -492,7 +471,7 @@ The generated kernel revealed that several checklists items that occur later in 
 \caption{Highest Scoring Essence Kernel Generated By Genetic Algorithm}
 \label{BestResults}
 \centering
-\begin{tabular}{|p{0.35in}|p{1.70in}|p{0.60in}|p{0.30in}|}
+\begin{tabular}{|p{0.50in}|p{2.80in}|p{1.00in}|p{1.40in}|}
 \hline
 State & Checklist & Original \mbox{Alpha} & Original State \\ \hline
 State 1 & Stakeholders wish to make an investment in better understanding potential value & Opportunity & 1. Identified \\ \hline
@@ -504,6 +483,7 @@ State 2 & Funding model is clear & Work & 1. Initiated \\ \hline
 State 2 & Stakeholder representatives agree to take on responsibilities & Stakeholders & 2. Represented \\  \hline
 State 2 & Team values stakeholder representatives' input & Stakeholders & 4. In Agreement \\ \hline
 State 2 & Opportunity addresses problem and stakeholder needs & Opportunity & 2. Solution Needed \\ \hline
+... &  & \\ \hline
 \end{tabular}
 \end{table}
 
