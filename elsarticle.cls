@@ -6,7 +6,7 @@
 %%
 %% elsarticle.dtx  (with options: `class')
 %% 
-%% Copyright 2007, 2008, 2009 Elsevier Ltd
+%% Copyright 2007, 2008, 2009, 2010 Elsevier Ltd
 %% 
 %% This file is part of the 'Elsarticle Bundle'.
 %% -------------------------------------------
@@ -22,11 +22,11 @@
 %% given in the file `manifest.txt'.
 %% 
 %%
-%% $Id: elsarticle.dtx 19 2009-12-17 07:07:52Z rishi $
+%% $Id: elsarticle.dtx 26 2010-06-11 11:54:01Z rishi $
 %%
  \def\RCSfile{elsarticle}%
- \def\RCSversion{1.20b}%
- \def\RCSdate{2009/09/17}%
+ \def\RCSversion{1.21}%
+ \def\RCSdate{2010/06/11}%
  \def\@shortjnl{\relax}
  \def\@journal{Elsevier Ltd} \def\@company{Elsevier Ltd}
  \def\@issn{000-0000}
@@ -36,7 +36,8 @@
 \def\ABD{\AtBeginDocument}
 \newif\ifpreprint \preprintfalse
 \newif\iflongmktitle \longmktitlefalse
-
+\newif\ifnopreprintline \nopreprintlinefalse
+\newif\ifcorexist
 \def\@blstr{1}
 \newdimen\@bls
 \@bls=\baselineskip
@@ -54,11 +55,15 @@
 \DeclareOption{preprint}{\global\preprinttrue
   \gdef\@blstr{1}\xdef\jtype{0}%
    \AtBeginDocument{\@twosidefalse\@mparswitchfalse}}
+\DeclareOption{nopreprintline}{\global\nopreprintlinetrue}
 \DeclareOption{final}{\gdef\@blstr{1}\global\preprintfalse}
 \DeclareOption{review}{\global\preprinttrue\gdef\@blstr{1.5}}
 \DeclareOption{authoryear}{\xdef\@biboptions{round,authoryear}}
-\DeclareOption{number}{\xdef\@biboptions{numbers}}
-\DeclareOption{numbers}{\xdef\@biboptions{numbers}}
+%\DeclareOption{number}{\xdef\@biboptions{number}}
+   \DeclareOption{number}{\xdef\@biboptions{super,comma,nobibstyle}
+   \renewcommand\@biblabel[1]{#1.}
+}
+\DeclareOption{numbers}{\xdef\@biboptions{super}}
 \DeclareOption{longtitle}{\global\longmktitletrue}
 \DeclareOption{5p}{\xdef\jtype{5}\global\preprintfalse
   \ExecuteOptions{twocolumn}}
@@ -73,7 +78,7 @@
   \let\iiint\relax
   \let\iiiint\relax
   \let\idotsint\relax
-  \let\openbox\relax}}{\RequirePackage{times}}}
+  \let\openbox\relax}}{\AtEndOfClass{\RequirePackage{times}}}}
 \ExecuteOptions{a4paper,10pt,oneside,onecolumn,number,preprint}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
@@ -130,14 +135,14 @@
 \let\@cormark\@empty
 \let\@cornotes\@empty
 \newcounter{cnote}
-\def\cortext[#1]#2{\g@addto@macro\@cornotes{%
+\def\cortext[#1]#2{\global\corexisttrue\g@addto@macro\@cornotes{%
     \refstepcounter{cnote}\elsLabel{#1}%
     \def\thefootnote{\ifcase\thecnote\or$\ast$\or
     $\ast\ast$\fi}%
     \footnotetext{#2}}}
 
 \let\@corref\@empty
-\def\corref#1{\edef\cnotenum{\elsRef{#1}}%
+\def\corref#1{\global\corexisttrue\edef\cnotenum{\elsRef{#1}}%
     \edef\@corref{\ifcase\cnotenum\or
          $\ast$\or$\ast\ast$\fi\hskip-1pt}}
 
@@ -170,7 +175,7 @@
 \gdef\emailauthor#1#2{\stepcounter{ead}%
      \g@addto@macro\@elseads{\raggedright%
       \let\corref\@gobble
-      \eadsep\texttt{#1} (#2)\def\eadsep{\unskip,\space}}%
+      \eadsep{#1} (#2).\def\eadsep{\unskip,\space}}%
 }
 \gdef\@uad[#1]#2{\bgroup
   \def~{\string\hashchar\space}%
@@ -181,7 +186,7 @@
   \egroup
 }
 \def\urlauthor#1#2{\g@addto@macro\@elsuads{\let\corref\@gobble%
-     \raggedright\eadsep\texttt{#1}\space(#2)%
+     \raggedright\eadsep{#1}\space(#2)%
      \def\eadsep{\unskip,\space}}%
 }
 
@@ -225,6 +230,17 @@
 \def\addsep{\par\vskip6pt}
 \def\address{\@ifnextchar[{\@@address}{\@address}}
 
+%%%%%%%%%\def\correspondingauthor{\@ifnextchar[{\@correspondingauthor}{\@correspondingauthor[]}}
+%%%%%%%%%\def\@correspondingauthor[#1]#2{{\renewcommand\thefootnote{}%
+%%%%%%%%%\footnotetext[-1]{\hspace*{-6.5pt}{${\smash{\raise2pt\hbox{$#1$}}}$}\kern4pt\footnotesize#2}}}%
+
+\def\correspondingauthor{\@ifnextchar[{\@correspondingauthor}{\@correspondingauthor[]}}
+\def\@correspondingauthor[#1]#2{{\renewcommand\thefootnote{}\let\qtoa\Qtoa%
+\footnotetext[-1]{\hspace*{-12pt}\hbox to 12pt{\hfill{$^{\smash{#1}}$}\hskip3pt}\footnotesize#2}\par\vspace*{1pt}}}%
+
+\def\email#1{\global\corexisttrue{\renewcommand\thefootnote{}%
+\footnotetext[-1]{{\itshape E-mail address:}\ #1\par\vspace*{12pt}}}}%
+
 \def\@alph#1{%
   \ifcase#1\or a\or b\or c\or d\or e\or f\or g\or h\or i\or j\or k\or
   l\or m\or n\or o\or p\or q\or r\or s\or t\or u\or v\or w\or x\or
@@ -260,7 +276,7 @@
      \refstepcounter{affn}
      \xdef\@currentlabel{\theaffn}
      \elsLabel{#1}%
-    \textsuperscript{\theaffn}#2\par}}
+    \textsuperscript{\theaffn}#2\par\vspace*{.5pt}}}
 
 \long\def\@address#1{\g@addto@macro\elsauthors{%
     \def\baselinestretch{1}%
@@ -297,13 +313,13 @@
    \let\columnwidth=\textwidth\fi
   \ifx\@tnotes\@empty\else\@tnotes\fi
   \ifx\@nonumnotes\@empty\else\@nonumnotes\fi
-  \ifx\@cornotes\@empty\else\@cornotes\fi
+ \ifx\@cornotes\@empty\else\@cornotes\fi
   \ifx\@elseads\@empty\relax\else
    \let\thefootnote\relax
    \footnotetext{\ifnum\theead=1\relax
-      \textit{Email address:\space}\else
-      \textit{Email addresses:\space}\fi
-     \@elseads}\fi
+      \textit{E-mail address:\space}\else
+      \textit{E-mail addresses:\space}\fi
+     \@elseads\vspace*{11pt}}\fi
   \ifx\@elsuads\@empty\relax\else
    \let\thefootnote\relax
    \footnotetext{\textit{URL:\space}%
@@ -439,7 +455,7 @@
      \else
        \finalMaketitle\printFirstPageNotes
       \fi
-    \gdef\thefootnote{\arabic{footnote}}}%
+    \gdef\thefootnote{\arabic{footnote}}\vskip15pt}%
    \fi
   \fi
  \fi
@@ -447,20 +463,20 @@
 \def\ps@pprintTitle{%
      \let\@oddhead\@empty
      \let\@evenhead\@empty
-     \def\@oddfoot{\footnotesize\itshape
+     \def\@oddfoot{\ifnopreprintline\relax\else\footnotesize\itshape
        Preprint submitted to \ifx\@journal\@empty Elsevier
-       \else\@journal\fi\hfill\today}%
+       \else\@journal\fi\hfill\@date\fi}%
      \let\@evenfoot\@oddfoot}
 \def\@seccntDot{.}
 \def\@seccntformat#1{\csname the#1\endcsname\@seccntDot\hskip 0.5em}
 
 \renewcommand\section{\@startsection {section}{1}{\z@}%
            {18\p@ \@plus 6\p@ \@minus 3\p@}%
-           {9\p@ \@plus 6\p@ \@minus 3\p@}%
+           {12.2\p@}% \@plus 6\p@ \@minus 3\p@}%
            {\normalsize\bfseries\boldmath}}
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
            {12\p@ \@plus 6\p@ \@minus 3\p@}%
-           {3\p@ \@plus 6\p@ \@minus 3\p@}%
+           {12\p@}% \@plus 6\p@ \@minus 3\p@}%
            {\normalfont\normalsize\itshape}}
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
            {12\p@ \@plus 6\p@ \@minus 3\p@}%
@@ -501,14 +517,12 @@
              \fi\fi\fi\fi\fi\fi\fi\fi
   \@tempa}
 \newlength{\@sep} \newlength{\@@sep}
-\setlength{\@sep}{.5\baselineskip plus.2\baselineskip
-            minus.2\baselineskip}
-\setlength{\@@sep}{.1\baselineskip plus.01\baselineskip
-            minus.05\baselineskip}
+\setlength{\@sep}{12pt}%.5\baselineskip plus.2\baselineskip minus.2\baselineskip}
+\setlength{\@@sep}{12pt}%.1\baselineskip plus.01\baselineskip minus.05\baselineskip}
 \providecommand{\sfbc}{\rmfamily\upshape}
 \providecommand{\sfn}{\rmfamily\upshape}
 \def\@enfont{\ifnum \@enumdepth >1\let\@nxt\sfn \else\let\@nxt\sfbc \fi\@nxt}
-\def\enumerate{%
+\def\enumerate{\par%
    \ifnum \@enumdepth >3 \@toodeep\else
       \advance\@enumdepth \@ne
       \edef\@enumctr{enum\romannumeral\the\@enumdepth}\fi
@@ -528,30 +542,53 @@
 \def\@enum@{\list{{\@enfont\csname label\@enumctr\endcsname}}%
            {\usecounter{\@enumctr}\def\makelabel##1{\hss\llap{##1}}%
      \ifnum \@enumdepth>1\setlength{\topsep}{\@@sep}\else
-           \setlength{\topsep}{\@sep}\fi
-     \ifnum \@enumdepth>1\setlength{\itemsep}{0pt plus1pt minus1pt}%
-      \else \setlength{\itemsep}{\@@sep}\fi
-     %\setlength\leftmargin{\leftMargin}%%%{1.8em}
-     \setlength{\parsep}{0pt plus1pt minus1pt}%
-     \setlength{\parskip}{0pt plus1pt minus1pt}
-                   }}
+           \setlength{\topsep}{12pt}\fi
+     \ifnum \@enumdepth>1\setlength{\itemsep}{0pt}% plus1pt minus1pt}%
+      \else \setlength{\itemsep}{0pt}\fi
+     \setlength\leftmargin{\leftMargin}%%%{1.8em}
+     \setlength{\parsep}{0pt}%plus1pt minus1pt}%
+     \setlength{\parskip}{0pt}%plus1pt minus1pt}
+     \setlength{\topsep}{10pt}%plus1pt minus1pt}
+     %\leftskip0pt
+     }}
 
 \def\endenumerate{\par\ifnum \@enumdepth >1\addvspace{\@@sep}\else
            \addvspace{\@sep}\fi \endlist}
 
 \def\sitem{\@noitemargtrue\@item[\@itemlabel *]}
 
+
+\newskip\abovelistskipi\abovelistskipi12pt% plus2pt
+\newskip\belowlistskipi\belowlistskipi12pt% plus2pt
+\newskip\abovelistskipii\abovelistskipii0pt%
+\newskip\belowlistskipii\belowlistskipii0pt%
+\newskip\abovelistskipiii\abovelistskipiii0pt%
+\newskip\belowlistskipiii\belowlistskipiii0pt%
+\newskip\abovelistskipiv\abovelistskipiv0pt%
+\newskip\belowlistskipiv\belowlistskipiv0pt%
+\newskip\abovelistskipv\abovelistskipv0pt%
+\newskip\belowlistskipv\belowlistskipv0pt%
+
 \def\itemize{\@ifnextchar[{\@Itemize}{\@Itemize[]}}
 
 \def\@Itemize[#1]{\def\next{#1}%
   \ifnum \@itemdepth >\thr@@\@toodeep\else
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
    \advance\@itemdepth\@ne
   \ifx\next\@empty\else\expandafter\def\csname
    labelitem\romannumeral\the\@itemdepth\endcsname{#1}\fi%
   \edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
   \expandafter\list\csname\@itemitem\endcsname
-  {\def\makelabel##1{\hss\llap{##1}}}%
- \fi}
+  {%
+  \topsep\csname abovelistskip\romannumeral\the\@itemdepth\endcsname%\fi
+  \def\makelabel##1{\hss\llap{##1}}}%
+ \fi\itemsep0pt\parsep0pt\parskip0pt}
+
+\def\enditemize{%
+\@topsepadd\csname belowlistskip\romannumeral\the\@itemdepth\endcsname%\fi
+\endlist}
+ 
 \def\newdefinition#1{%
   \@ifnextchar[{\@odfn{#1}}{\@ndfn{#1}}}%]
 \def\@ndfn#1#2{%
@@ -647,7 +684,7 @@
 \def\biboptions#1{\def\next{#1}\immediate\write\splwrite{%
    \string\g@addto@macro\string\@biboptions{%
     ,\expandafter\strip@prefix\meaning\next}}}
-
+%\renewcommand\NAT@open{}\renewcommand\NAT@close{}
 \let\baselinestretch=\@blstr
 
 \ifnum\jtype=1
@@ -707,7 +744,7 @@
 \fi\fi\fi
 \def\journal#1{\gdef\@journal{#1}}
  \let\@journal\@empty
-\newenvironment{frontmatter}{}{\maketitle}
+\newenvironment{frontmatter}{}{\maketitle\ifcorexist \enlargethispage{-4mm}\else\enlargethispage{-12mm}\fi}
 
 \long\def\@makecaption#1#2{%
   \vskip\abovecaptionskip\footnotesize
@@ -754,11 +791,24 @@
   \gdef\thefigure{\@Alph\c@section.\arabic{figure}}%
   \gdef\thetable{\@Alph\c@section.\arabic{table}}%
   \gdef\thesection{\appendixname~\@Alph\c@section}%
+  \gdef\thesubsection{\@Alph\c@section.\arabic{subsection}}%
   \@addtoreset{equation}{section}%
   \gdef\theequation{\@Alph\c@section.\arabic{equation}}%
   \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
 }
-
+\def\appendixname{Appendix }
+\newcommand\normalMode{\par
+  \setcounter{section}{0}%
+  \setcounter{subsection}{0}%
+  \setcounter{equation}{0}
+  \gdef\thefigure{\@Alph\c@section.\arabic{figure}}%
+  \gdef\thetable{\@Alph\c@section.\arabic{table}}%
+  \gdef\thesection{\@arabic\c@section}%
+  \gdef\thesubsection{\c@section.\arabic{subsection}}%
+  \@addtoreset{equation}{section}%
+  \gdef\theequation{\@Alph\c@section.\arabic{equation}}%
+  \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
+}
 %%%% \numberline width calculation for appendix.
 \newdimen\appnamewidth
 \def\tmptocnumberline#1{%
@@ -797,206 +847,45 @@
     \global\setcounter{footnote}{\thefnote}%
     \footnotetext{#2}}}
 %%%
-  \def\cortext[#1]#2{\g@addto@macro\@cornotes{%
+  \def\cortext[#1]#2{\g@addto@macro\@cornotes{\hspace*{-12pc}%
     \refstepcounter{cnote}%
     \immediate\write\@auxout{\string\Newlabel{#1}{\thecnote}}
     \def\thefootnote{\ifcase\thecnote\or$\ast$\or
     $\ast\ast$\fi}%
-    \footnotetext{#2}}}
+    \footnotetext{#2 \vspace*{.5pt}}}}
 }
+%%
+\newbox\tempbox%
+\newenvironment{nomenclature}{\par\vskip6pt plus1pt\setbox\tempbox\vbox\bgroup\if@twocolumn\hsize17.5pc\else\hsize37.3pc\fi\vspace*{-17.7pt}\section*{Nomenclature}}{\egroup\par\noindent\fboxsep10pt\fbox{\box\tempbox}\vskip6pt}
+\def\deflist{\@ifnextchar[{\@deflist}{\@deflist[]}}
+\newbox\defbox%
+\newdimen\defboxdimen%
+\def\@deflist[#1]{%
+\setbox\defbox\hbox{#1:\quad}%
+\defboxdimen\wd\defbox%
+\def\tempa{#1}%
+\par\addvspace{12pt plus2pt minus2pt}%
+\setlength\parindent{0pt}%
+\def\deftitle##1{{\noindent\itshape##1}\par}%\fontsize{12}{12}\selectfont
+\ifx\tempa\@empty%
+\def\defitem##1{\@hangfrom{##1\ }}%%%
+\else%
+\def\defitem##1{\@hangfrom{\hbox to \defboxdimen{##1\quad}}}%%
+\fi%
+\def\defterm##1{##1\par}
+}
+%
+\def\enddeflist{\par\addvspace{8pt plus2pt minus2pt}}
+%
+
+
+
+
 \endinput
+
+
+
 %%
+
+
 %% End of file `elsarticle.cls'.
-%%
-%% Copyright 2007, 2008, 2009 Elsevier Ltd
-%%
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%%
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.2 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%%
-%% The list of all files belonging to the 'Elsarticle Bundle' is
-%% given in the file `manifest.txt'.
-%%
-
-%% Template article for Elsevier's document class `elsarticle'
-%% with numbered style bibliographic references
-%% SP 2008/03/01
-%%
-%%
-%%
-%% $Id: elsarticle-template-num.tex 4 2009-10-24 08:22:58Z rishi $
-%%
-%%
-\documentclass[preprint,12pt,3p]{elsarticle}
-
-%% Use the option review to obtain double line spacing
-%% \documentclass[preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% if you use PostScript figures in your article
-%% use the graphics package for simple commands
-%% \usepackage{graphics}
-%% or use the graphicx package for more complicated commands
-%% \usepackage{graphicx}
-%% or use the epsfig package if you prefer to use the old commands
-%% \usepackage{epsfig}
-
-%% The amssymb package provides various useful mathematical symbols
-\usepackage{amssymb}
-%% The amsthm package provides extended theorem environments
-%% \usepackage{amsthm}
-
-%% The lineno packages adds line numbers. Start line numbering with
-%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
-%% for the whole article with \linenumbers after \end{frontmatter}.
-%% \usepackage{lineno}
-
-%% natbib.sty is loaded by default. However, natbib options can be
-%% provided with \biboptions{...} command. Following options are
-%% valid:
-
-%%   round  -  round parentheses are used (default)
-%%   square -  square brackets are used   [option]
-%%   curly  -  curly braces are used      {option}
-%%   angle  -  angle brackets are used    <option>
-%%   semicolon  -  multiple citations separated by semi-colon
-%%   colon  - same as semicolon, an earlier confusion
-%%   comma  -  separated by comma
-%%   numbers-  selects numerical citations
-%%   super  -  numerical citations as superscripts
-%%   sort   -  sorts multiple citations according to order in ref. list
-%%   sort&compress   -  like sort, but also compresses numerical citations
-%%   compress - compresses without sorting
-%%
-%% \biboptions{comma,round}
-
-% \biboptions{}
-
-%Todd added for fractions
-\usepackage{xfrac}
-%Todd added for strike-outs
-\usepackage{ulem}
-%Todd added for mutlirow tables
-\usepackage{multirow}
-%Todd added for graphics generation
-\usepackage{tikz}
-\usetikzlibrary{"automata"}
-%Todd added for cross referencing verbatim listings
-\usepackage{listings}
-%Todd added for psuedocode listings
-\usepackage{algpseudocode}
-
-
-
-\journal{Nuclear Physics B}
-
-\begin{document}
-
-\begin{frontmatter}
-
-\title{Towards Generating Essence Kernels Using Genetic Algorithms}
-\tnotetext[label0]{This is only an example}
-
-
-\author[label1,label2]{Author One\corref{cor1}\fnref{label3}}
-\address[label1]{Address One}
-\address[label2]{Address Two\fnref{label4}}
-
-\cortext[cor1]{I am corresponding author}
-\fntext[label3]{I also want to inform about\ldots}
-\fntext[label4]{Small city}
-
-\ead{author.one@mail.com}
-\ead[url]{author-one-homepage.com}
-
-\author[label5]{Author Two}
-\address[label5]{Some University}
-\ead{author.two@mail.com}
-
-\author[label1,label5]{Author Three}
-\ead{author.three@mail.com}
-
-\begin{abstract}
-The SEMAT community created the Essence Kernel as a unifying framework for describing and analyzing software engineering endeavors. \cite{JacobsonQueue} The Essence Kernel is based upon human experience and judgement, not empirical data. 
-
-Background: At Carnegie Mellon University in Silicon Valley, we have collected data from masters of science in software engineering students as they complete a team-based project course as their capstone or practicum project. Each week, the team records their progress in an Essence Reflection meeting \cite{EASE2014}. This data serves as training data for evaluating the Essence Kernel and alternative candidate kernels.
-
-Objective: Optimize candidate replacement kernels by using a fitness function based on empirical data in order to improve the Essence Kernel.
-
-Method: Using genetic programming, the kernel genotype will be represented as a collection of linear state machines each with a collection of unique checklist items. Operations to evolve the genotypes include randomly moving checklist items, splitting states, and deleting states by moving their checklist items to other states. 
-
-Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data.
-
-Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
-
-Conclusion: The original Essence kernel is highly structured around human notions of order. Genetic Algorithms can generate candidate kernels that humans might not normally consider.
-\end{abstract}
-
-\begin{keyword}
-%% keywords here, in the form: keyword \sep keyword
-example \sep \LaTeX \sep template
-%% MSC codes here, in the form: \MSC code \sep code
-%% or \MSC[2008] code \sep code (2000 is the default)
-\end{keyword}
-
-\end{frontmatter}
-
-
-\include{paper.tex}
-
-%% The Appendices part is started with the command \appendix;
-%% appendix sections are then done as normal sections
-\appendix
-
-\section{Section in Appendix}
-\label{appendix-sec1}
-
-Sample text. Sample text. Sample text. Sample text. Sample text. Sample text. 
-Sample text. Sample text. Sample text. Sample text. Sample text. Sample text. 
-Sample text. 
-
-%% References
-%%
-%% Following citation commands can be used in the body text:
-%% Usage of \cite is as follows:
-%%   \cite{key}         ==>>  [#]
-%%   \cite[chap. 2]{key} ==>> [#, chap. 2]
-%%
-
-%% References with bibTeX database:
-
-\bibliographystyle{elsarticle-num}
-% \bibliographystyle{elsarticle-harv}
-% \bibliographystyle{elsarticle-num-names}
-% \bibliographystyle{model1a-num-names}
-% \bibliographystyle{model1b-num-names}
-% \bibliographystyle{model1c-num-names}
-% \bibliographystyle{model1-num-names}
-% \bibliographystyle{model2-names}
-% \bibliographystyle{model3a-num-names}
-% \bibliographystyle{model3-num-names}
-% \bibliographystyle{model4-names}
-% \bibliographystyle{model5-names}
-% \bibliographystyle{model6-num-names}
-
-\bibliography{sample}
-
-
-\end{document}
-
-%%
-%% End of file `elsarticle-template-num.tex'.

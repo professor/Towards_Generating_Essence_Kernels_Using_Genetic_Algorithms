@@ -1,52 +1,84 @@
-%%
-%% Copyright 2007, 2008, 2009 Elsevier Ltd
-%%
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%%
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.2 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%%
-%% The list of all files belonging to the 'Elsarticle Bundle' is
-%% given in the file `manifest.txt'.
-%%
+% Template for Elsevier CRC journal article
+% version 1.2 dated 09 May 2011
 
-%% Template article for Elsevier's document class `elsarticle'
-%% with numbered style bibliographic references
-%% SP 2008/03/01
-%%
-%%
-%%
-%% $Id: elsarticle-template-num.tex 4 2009-10-24 08:22:58Z rishi $
-%%
-%%
-\documentclass[preprint,12pt,3p]{elsarticle}
+% This file (c) 2009-2011 Elsevier Ltd.  Modifications may be freely made,
+% provided the edited file is saved under a different name
 
-%% Use the option review to obtain double line spacing
-%% \documentclass[preprint,review,12pt]{elsarticle}
+% This file contains modifications for Procedia Computer Science
 
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+% Changes since version 1.1
+% - added "procedia" option compliant with ecrc.sty version 1.2a
+%   (makes the layout approximately the same as the Word CRC template)
+% - added example for generating copyright line in abstract
 
-%% if you use PostScript figures in your article
-%% use the graphics package for simple commands
-%% \usepackage{graphics}
-%% or use the graphicx package for more complicated commands
-%% \usepackage{graphicx}
-%% or use the epsfig package if you prefer to use the old commands
-%% \usepackage{epsfig}
+%-----------------------------------------------------------------------------------
+
+%% This template uses the elsarticle.cls document class and the extension package ecrc.sty
+%% For full documentation on usage of elsarticle.cls, consult the documentation "elsdoc.pdf"
+%% Further resources available at http://www.elsevier.com/latex
+
+%-----------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                          %%
+%% Important note on usage                                  %%
+%% -----------------------                                  %%
+%% This file should normally be compiled with PDFLaTeX      %%
+%% Using standard LaTeX should work but may produce clashes %%
+%%                                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The '3p' and 'times' class options of elsarticle are used for Elsevier CRC
+%% The 'procedia' option causes ecrc to approximate to the Word template
+\documentclass[3p,times,procedia]{elsarticle}
+\flushbottom
+
+%% The `ecrc' package must be called to make the CRC functionality available
+\usepackage{ecrc}
+%\usepackage{amsmath}
+
+
+%% The ecrc package defines commands needed for running heads and logos.
+%% For running heads, you can set the journal name, the volume, the starting page and the authors
+
+%% set the volume if you know. Otherwise `00'
+\volume{00}
+
+%% set the starting page if not 1
+\firstpage{1}
+
+%% Give the name of the journal
+\journalname{Procedia Computer Science}
+
+%% Give the author list to appear in the running head
+%% Example \runauth{C.V. Radhakrishnan et al.}
+\runauth{T. Sedano et al.}
+
+%% The choice of journal logo is determined by the \jid and \jnltitlelogo commands.
+%% A user-supplied logo with the name <\jid>logo.pdf will be inserted if present.
+%% e.g. if \jid{yspmi} the system will look for a file yspmilogo.pdf
+%% Otherwise the content of \jnltitlelogo will be set between horizontal lines as a default logo
+
+%% Give the abbreviation of the Journal.
+\jid{procs}
+
+%% Give a short journal name for the dummy logo (if needed)
+%\jnltitlelogo{Procedia Computer Science}
+
+%% Hereafter the template follows `elsarticle'.
+%% For more details see the existing template files elsarticle-template-harv.tex and elsarticle-template-num.tex.
+
+%% Elsevier CRC generally uses a numbered reference style
+%% For this, the conventions of elsarticle-template-num.tex should be followed (included below)
+%% If using BibTeX, use the style file elsarticle-num.bst
+
+%% End of ecrc-specific commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% The amssymb package provides various useful mathematical symbols
+
 \usepackage{amssymb}
 %% The amsthm package provides extended theorem environments
 %% \usepackage{amsthm}
@@ -73,9 +105,21 @@
 %%   sort&compress   -  like sort, but also compresses numerical citations
 %%   compress - compresses without sorting
 %%
-%% \biboptions{comma,round}
+%\biboptions{sort&compress}
 
 % \biboptions{}
+
+% if you have landscape tables
+\usepackage[figuresright]{rotating}
+%\usepackage{harvard}
+% put your own definitions here:x
+%   \newcommand{\cZ}{\cal{Z}}
+%   \newtheorem{def}{Definition}[section]
+%   ...
+
+% add words to TeX's hyphenation exception list
+%\hyphenation{author another created financial paper re-commend-ed Post-Script}
+
 
 %Todd added for fractions
 \usepackage{xfrac}
@@ -91,13 +135,37 @@
 %Todd added for psuedocode listings
 \usepackage{algpseudocode}
 
-
-
-\journal{SCSE 2015}
+% declarations for front matter
 
 \begin{document}
 
 \begin{frontmatter}
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for the associated footnote;
+%% use the fnref command within \author or \address for footnotes;
+%% use the fntext command for the associated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for the associated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%%
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \address{Address\fnref{label3}}
+%% \fntext[label3]{}
+
+\dochead{The 2015 International Conference on Soft Computing and Software Engineering (SCSE 2015)}
+%% Use \dochead if there is an article header, e.g. \dochead{Short communication}
+%% \dochead can also be used to include a conference title, if directed by the editors
+%% e.g. \dochead{17th International Conference on Dynamical Processes in Excited States of Solids}
 
 \title{Towards Generating Essence Kernels Using Genetic Algorithms}
 
@@ -110,7 +178,6 @@
 \address{Carnegie Mellon University}
 \address{Silicon Valley Campus}
 \address{Moffett Field, CA 94035, USA}
-
 
 
 \begin{abstract}
@@ -127,6 +194,7 @@ Results: Genetic programming created random candidate essence kernels that score
 Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
 
 Conclusion: The original Essence kernel is highly structured around human notions of order. Genetic algorithms can generate candidate kernels that humans might not normally consider.
+
 \end{abstract}
 
 \begin{keyword}
@@ -149,9 +217,9 @@ The SEMAT community created Essence as a universal framework for any software en
 
 The Essence kernel is composed of a set of alphas, alpha states, and alpha state checklist items. The Essence kernel defines different characteristics or dimensions of a software project as an ``alpha.'' The seven alphas are \textbf{Stakeholders}, \textbf{Opportunity}, \textbf{Requirements}, \textbf{Software System}, \textbf{Team}, \textbf{Way of Working}, and \textbf{Work}. Essence decomposes each of these alphas into a set of states that represent a simple linear state machine as shown in Figure \ref{StateMachine}. For example, the \textbf{Requirements} alpha advances through the states \textit{Conceived}, \textit{Bounded}, \textit{Coherent}, \textit{Acceptable}, \textit{Addressed}, and \textit{Fulfilled.} Each state has a checklist or set of goals. To achieve a state, the project must satisfy every checklist item for that state. \cite{OMGStandard} 
  
-\begin{figure}[h]
-\includegraphics[width=5.4in]{kernel_images/StateMachineRequirements}
-\caption{Kernel's linear state machine for Requirements alpha}\label{StateMachine}
+\begin{figure}[h]\vspace*{4pt}
+\centerline{\includegraphics[width=5.4in]{kernel_images/StateMachineRequirements}}
+\caption{Kernel's linear state machine for Requirements alpha}\vspace*{-6pt}\label{StateMachine}
 \end{figure}
 
 When the SEMAT community created the Essence kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
@@ -237,21 +305,40 @@ Once initialized, genetic algorithms typically run for a number of generations u
 
 Once all of the offspring are created, the code implements ``comma survivor selection" by adding each offspring to the population pool, sorting the parents and offspring together, and retaining only the top 50\% of the combined population. This is also known as elitism as the population can only increase its fitness scores. The code would terminate once 500 generations had been created.
 
+% \begin{table}[h]
+% \caption{Evolutionary Algorithm Technical Summary}
+% \label{TechnicalSummary}
+% \centering
+% \begin{tabular}{|p{1.70in}|p{4.30in}|}
+% \hline
+% {Type}  & {Genetic Programming} \\ \hline
+% {Representation} & {Collection of states which are a collection of checklist items}  \\ \hline
+% {Crossover and} & {1) move checklist item (to another state) (80\%), } \\
+% {Mutation} & {2) split state into two states (10\%), } \\ 
+% {} & {3) delete state (by randomly moving its checklist items) (10\%) } \\ \hline
+% {Parent selection} & {Deterministic} \\ \hline
+% {Survivor selection}  & {Comma} \\ \hline
+% {Population size}  & {40} \\ \hline
+% {Termination \mbox{condition}} & {500 generations} \\ \hline
+% \end{tabular}
+% \end{table}
+
 \begin{table}[h]
 \caption{Evolutionary Algorithm Technical Summary}
 \label{TechnicalSummary}
 \centering
-\begin{tabular}{|p{1.70in}|p{4.30in}|}
+\begin{tabular}{p{1.70in}p{4.30in}}
 \hline
-{Type}  & {Genetic Programming} \\ \hline
-{Representation} & {Collection of states which are a collection of checklist items}  \\ \hline
-{Crossover and} & {1) move checklist item (to another state) (80\%), } \\
-{Mutation} & {2) split state into two states (10\%), } \\ 
-{} & {3) delete state (by randomly moving its checklist items) (10\%) } \\ \hline
-{Parent selection} & {Deterministic} \\ \hline
-{Survivor selection}  & {Comma} \\ \hline
-{Population size}  & {40} \\ \hline
-{Termination \mbox{condition}} & {500 generations} \\ \hline
+{Type}  & {Genetic Programming} \\ 
+{Representation} & {Collection of states which are a collection of checklist items}  \\ 
+{Crossover and Mutation} & {1) move checklist item (to another state) (80\%), } \\
+{} & {2) split state into two states (10\%), } \\ 
+{} & {3) delete state (by randomly moving its checklist items) (10\%) } \\ 
+{Parent selection} & {Deterministic} \\ 
+{Survivor selection}  & {Comma} \\ 
+{Population size}  & {40} \\ 
+{Termination \mbox{condition}} & {500 generations} \\ 
+\hline
 \end{tabular}
 \end{table}
 
@@ -379,22 +466,41 @@ In retrospect, completion is not an ideal fitness function. Since genetic algori
 \subsection{How does the number of alphas affect the fitness scores?}
 We conducted a series of experimental runs by setting the initial population so that all candidates start with the same number of alphas. We inspected the population after the algorithm has run for a number of generations to see how the number of alphas affects the fitness score. Note that the current set of operators can not alter the number of alphas.
 
+% \begin{table}[h]
+% \caption{Number of Alphas and Fitness Scores for Partial Ordering}
+% \label{NumberOfAlphas}
+% \centering
+% \begin{tabular}{|l|r|r|}
+% \hline
+% Number of Alphas & \multicolumn{2}{c|}{Fitness Score} \\ \hline
+%                  & Gen 0            & Gen 200            \\ \hline
+% { 1 } & { 58606 } & { 78530 } \\ \hline
+% { 2 } & { 30540 } & { 70452 } \\ \hline
+% { 3 } & { 20842 } & { 68344 } \\ \hline
+% { 4 } & { 16146 } & { 41040 } \\ \hline
+% { 5 } & { 13150 } & { 43636 } \\ \hline
+% { 6 } & { 11718 } & { 49408 } \\ \hline
+% { 7 } & { 10254 } & { 34990 } \\ \hline
+% { 8 } & {  9010 } & { 31560 } \\ \hline
+% \end{tabular}
+% \end{table}
+
 \begin{table}[h]
-\caption{Number of Alphas and Fitness Scores for Partial Orderinr}
+\caption{Number of Alphas and Fitness Scores for Partial Ordering}
 \label{NumberOfAlphas}
-\centering
-\begin{tabular}{|l|r|r|}
+\begin{tabular}{lrr}
 \hline
-Number of Alphas & \multicolumn{2}{c|}{Fitness Score} \\ \hline
+Number of Alphas & \multicolumn{2}{c}{Fitness Score}     \\
                  & Gen 0            & Gen 200            \\ \hline
-{ 1 } & { 58606 } & { 78530 } \\ \hline
-{ 2 } & { 30540 } & { 70452 } \\ \hline
-{ 3 } & { 20842 } & { 68344 } \\ \hline
-{ 4 } & { 16146 } & { 41040 } \\ \hline
-{ 5 } & { 13150 } & { 43636 } \\ \hline
-{ 6 } & { 11718 } & { 49408 } \\ \hline
-{ 7 } & { 10254 } & { 34990 } \\ \hline
-{ 8 } & {  9010 } & { 31560 } \\ \hline
+{ 1 } & { 58606 } & { 78530 } \\ 
+{ 2 } & { 30540 } & { 70452 } \\ 
+{ 3 } & { 20842 } & { 68344 } \\ 
+{ 4 } & { 16146 } & { 41040 } \\ 
+{ 5 } & { 13150 } & { 43636 } \\ 
+{ 6 } & { 11718 } & { 49408 } \\ 
+{ 7 } & { 10254 } & { 34990 } \\ 
+{ 8 } & {  9010 } & { 31560 } \\ 
+\hline
 \end{tabular}
 \end{table}
 
@@ -402,24 +508,43 @@ The Partial Ordering fitness function prefers low number of alphas. Table ~\ref{
 
 When initialized to a larger number of alphas, the genetic algorithm will discover that not using some of the alphas is advantageous. Starting with eight populated alphas, after 200 generations, three of the eight alphas are empty, and two are very sparse as seen in Table ~\ref{PartialOrderingPrefersLessAlphas}.
 
+% \begin{table*}
+% \caption{Number of Checklist Items Per State Per Alpha \\ Candidates Starting with Eight Alphas Evolve To Use Less Alphas with Partial Ordering}
+% \label{PartialOrderingPrefersLessAlphas}
+% \centering
+% \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+% \hline
+%  & \multicolumn{15}{l|}{state} \\ \hline
+%  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15 \\ \hline
+% alpha 1 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
+% alpha 2 & 5 & 1 &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
+% alpha 3 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
+% alpha 4 & 1 & 1 & 1 &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
+% alpha 5 & 5 & 8 & 4 & 3 & 7 & 7 & 7 & 4 & 5 & 2 & 2 &   &   &   &   \\ \hline
+% alpha 6 & 5 & 6 & 4 & 4 & 6 & 7 & 6 & 7 & 6 & 7 & 8 & 4 & 5 & 8 & 8 \\ \hline
+% alpha 7 & 2 & 6 & 7 & 5 & 4 & 2 &   &   &   &   &   &   &   &   &   \\ \hline
+% alpha 8 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
+% \end{tabular}
+% \end{table*}
+
 \begin{table*}
-\caption{Number of Checklist Items Per State Per Alpha \\ Candidates Starting with Eight Alphas Evolve To Use Less Alphas with Partial Ordering}
+\caption{Number of Checklist Items Per State Per Alpha}
 \label{PartialOrderingPrefersLessAlphas}
-\centering
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\begin{tabular}{llllllllllllllll}
 \hline
- & \multicolumn{15}{l|}{state} \\ \hline
+ & \multicolumn{15}{l}{state} \\ 
  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15 \\ \hline
-alpha 1 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
-alpha 2 & 5 & 1 &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
-alpha 3 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
-alpha 4 & 1 & 1 & 1 &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
-alpha 5 & 5 & 8 & 4 & 3 & 7 & 7 & 7 & 4 & 5 & 2 & 2 &   &   &   &   \\ \hline
-alpha 6 & 5 & 6 & 4 & 4 & 6 & 7 & 6 & 7 & 6 & 7 & 8 & 4 & 5 & 8 & 8 \\ \hline
-alpha 7 & 2 & 6 & 7 & 5 & 4 & 2 &   &   &   &   &   &   &   &   &   \\ \hline
+alpha 1 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ 
+alpha 2 & 5 & 1 &   &   &   &   &   &   &   &   &   &   &   &   &   \\ 
+alpha 3 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ 
+alpha 4 & 1 & 1 & 1 &   &   &   &   &   &   &   &   &   &   &   &   \\ 
+alpha 5 & 5 & 8 & 4 & 3 & 7 & 7 & 7 & 4 & 5 & 2 & 2 &   &   &   &   \\ 
+alpha 6 & 5 & 6 & 4 & 4 & 6 & 7 & 6 & 7 & 6 & 7 & 8 & 4 & 5 & 8 & 8 \\ 
+alpha 7 & 2 & 6 & 7 & 5 & 4 & 2 &   &   &   &   &   &   &   &   &   \\ 
 alpha 8 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
 \end{tabular}
 \end{table*}
+
 
 For the Partial Ordering fitness function, initializing the population to a single alpha results in the most fit candidates. 
 
@@ -428,9 +553,9 @@ Given this result, the genetic algorithm challenges us to consider creating an E
 \subsection{How do the mutation operators affect the fitness scores?}
 As another experiment, we ran 40 runs for five generations to see the impact of each operator on fitness score. By limiting to early generations, there is still plenty of opportunity for large changes in fitness. During each run, the program records the fitness differential before and after applying an operator. Figure ~\ref{OperatorsPartialOrdering} plots the distribution of fitness deltas per mutation operator.
 
-\begin{figure}[ht]
-\includegraphics[width=4.0in]{images/operator_analysis_partial_order_first_5_gens}
-\caption{Mutation Operators Effect on Fitness Scores for Partial Ordering}
+\begin{figure}[ht]\vspace*{4pt}
+\centerline{\includegraphics[width=4.0in]{images/operator_analysis_partial_order_first_5_gens}}
+\caption{Mutation Operators Effect on Fitness Scores for Partial Ordering}\vspace*{-6pt}
 \label{OperatorsPartialOrdering}
 \end{figure}
 
@@ -447,9 +572,9 @@ The mean of all of these mutation operators is slightly negative. As with most g
 
 % Partial Ordering maintains a consistent number of states over time. Figure ~\ref{NumberOfStatesPartialOrdering} illustrates how a population utilizes the number of states when constrained to four alphas. The randomly created initial population ranges from 23 to 38 states and evolves to use roughly 25 to 30 states through out its generations. A stable number of states, as opposed to an infinitely growing number of states, is a desirable property for a fitness function. 
 
-% \begin{figure}[ht]
-% \includegraphics[scale=0.6]{images/number_of_states_partial_ordering}
-% \caption{Number of States Fitness Analysis for Partial Ordering}
+% \begin{figure}[ht]\vspace*{4pt}
+% \centerline{\includegraphics[scale=0.6]{images/number_of_states_partial_ordering}}
+% \caption{Number of States Fitness Analysis for Partial Ordering}\vspace*{-6pt}
 % \label{NumberOfStatesPartialOrdering}
 % \end{figure}
 
@@ -459,9 +584,9 @@ Given that the Partial Ordering fitness function prefers smaller number of alpha
 
 The original kernel scores 13,372. The best generated kernel scores 85,122. For the Partial Ordering fitness function, the genetic algorithm had little difficulty in finding random solutions that score higher than the original kernel. The original kernel is optimized for human understanding and places 148 checklist items into logical sequences around themed alphas where as the candidate kernels are optimized around how teams actually flow through the checklist items.
 
-\begin{figure*}[ht]
-\includegraphics[width=6.25in]{images/best_results_partial_ordering_500gens_40runs}
-\caption{Fitness Scores using Partial Ordering}
+\begin{figure*}[ht]\vspace*{4pt}
+\centerline{\includegraphics[width=6.25in]{images/best_results_partial_ordering_500gens_40runs}}
+\caption{Fitness Scores using Partial Ordering}\vspace*{-6pt}
 \label{BestResultsPartialOrdering}
 \end{figure*}
 
@@ -469,22 +594,42 @@ Table ~\ref{BestResults} shows the beginning two states for the final candidate 
 
 The generated kernel revealed that several checklists items that occur later in the original kernel often happen earlier on real projects. For example, the generated kernel places ``Team values stakeholders representatives' input" in the second state. Likewise, several checklist items that occur early in the original kernel often happen later on real projects. For example, the generated kernel places ``Defect levels are acceptable" in the second to last state. In future work, more analysis can be done with sufficient number of teams.
 
+% \begin{table}[h]
+% \caption{Highest Scoring Essence Kernel Generated By Genetic Algorithm}
+% \label{BestResults}
+% \centering
+% \begin{tabular}{|p{0.50in}|p{2.80in}|p{1.00in}|p{1.40in}|}
+% \hline
+% State & Checklist & Original \mbox{Alpha} & Original State \\ \hline
+% State 1 & Stakeholders wish to make an investment in better understanding potential value & Opportunity & 1. Identified \\ \hline
+% State 1 & User types are identified & Requirements & 1. Conceived \\ \hline
+% State 1 & Team agrees on relevant stakeholder groups to be represented & Stakeholders & 1. Recognized \\ \hline
+% State 1 & Representatives respect team's way of working  & Stakeholders & 2. Represented \\ \hline
+% State 2 & An idea for a software solution is identified & Opportunity & 1. Identified \\ \hline
+% State 2 & Funding model is clear & Work & 1. Initiated \\ \hline
+% State 2 & Stakeholder representatives agree to take on responsibilities & Stakeholders & 2. Represented \\  \hline
+% State 2 & Team values stakeholder representatives' input & Stakeholders & 4. In Agreement \\ \hline
+% State 2 & Opportunity addresses problem and stakeholder needs & Opportunity & 2. Solution Needed \\ \hline
+% ... &  & \\ \hline
+% \end{tabular}
+% \end{table}
+
 \begin{table}[h]
 \caption{Highest Scoring Essence Kernel Generated By Genetic Algorithm}
 \label{BestResults}
 \centering
-\begin{tabular}{|p{0.50in}|p{2.80in}|p{1.00in}|p{1.40in}|}
+\begin{tabular}{p{0.50in}p{2.80in}p{1.00in}p{1.40in}}
 \hline
 State & Checklist & Original \mbox{Alpha} & Original State \\ \hline
-State 1 & Stakeholders wish to make an investment in better understanding potential value & Opportunity & 1. Identified \\ \hline
-State 1 & User types are identified & Requirements & 1. Conceived \\ \hline
-State 1 & Team agrees on relevant stakeholder groups to be represented & Stakeholders & 1. Recognized \\ \hline
-State 1 & Representatives respect team's way of working  & Stakeholders & 2. Represented \\ \hline
-State 2 & An idea for a software solution is identified & Opportunity & 1. Identified \\ \hline
-State 2 & Funding model is clear & Work & 1. Initiated \\ \hline
-State 2 & Stakeholder representatives agree to take on responsibilities & Stakeholders & 2. Represented \\  \hline
-State 2 & Team values stakeholder representatives' input & Stakeholders & 4. In Agreement \\ \hline
-State 2 & Opportunity addresses problem and stakeholder needs & Opportunity & 2. Solution Needed \\ \hline
+State 1 & Stakeholders wish to make an investment in better understanding potential value & Opportunity & 1. Identified \\ 
+State 1 & User types are identified & Requirements & 1. Conceived \\ 
+State 1 & Team agrees on relevant stakeholder groups to be represented & Stakeholders & 1. Recognized \\ 
+State 1 & Representatives respect team's way of working  & Stakeholders & 2. Represented \\
+State 2 & An idea for a software solution is identified & Opportunity & 1. Identified \\ 
+State 2 & Funding model is clear & Work & 1. Initiated \\ 
+State 2 & Stakeholder representatives agree to take on responsibilities & Stakeholders & 2. Represented \\ 
+State 2 & Team values stakeholder representatives' input & Stakeholders & 4. In Agreement \\
+State 2 & Opportunity addresses problem and stakeholder needs & Opportunity & 2. Solution Needed \\
 ... &  & \\ \hline
 \end{tabular}
 \end{table}
@@ -605,18 +750,6 @@ In conclusion, genetic algorithms explore the kernel search space through random
 % \end{figure}
 
 
-
-%% The Appendices part is started with the command \appendix;
-%% appendix sections are then done as normal sections
-% \appendix
-
-% \section{Section in Appendix}
-% \label{appendix-sec1}
-
-% Sample text. Sample text. Sample text. Sample text. Sample text. Sample text. 
-% Sample text. Sample text. Sample text. Sample text. Sample text. Sample text. 
-% Sample text. 
-
 %% References
 %%
 %% Following citation commands can be used in the body text:
@@ -627,7 +760,7 @@ In conclusion, genetic algorithms explore the kernel search space through random
 
 %% References with bibTeX database:
 
-\bibliographystyle{elsarticle-num}
+% \bibliographystyle{elsarticle-num}
 % \bibliographystyle{elsarticle-harv}
 % \bibliographystyle{elsarticle-num-names}
 % \bibliographystyle{model1a-num-names}
@@ -635,7 +768,7 @@ In conclusion, genetic algorithms explore the kernel search space through random
 % \bibliographystyle{model1c-num-names}
 % \bibliographystyle{model1-num-names}
 % \bibliographystyle{model2-names}
-% \bibliographystyle{model3a-num-names}
+\bibliographystyle{model3a-num-names}
 % \bibliographystyle{model3-num-names}
 % \bibliographystyle{model4-names}
 % \bibliographystyle{model5-names}
