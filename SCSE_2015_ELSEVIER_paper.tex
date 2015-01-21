@@ -102,25 +102,27 @@
 \title{Towards Generating Essence Kernels Using Genetic Algorithms}
 
 \author{Todd Sedano}
-\author{C\'ecile P\`eraire}
+\ead{todd.sedano@sv.cmu.edu}
+
+\author{C\'ecile P\'eraire}
+\ead{cecile.peraire@sv.cmu.edu}
+
 \address{Carnegie Mellon University}
 \address{Silicon Valley Campus}
 \address{Moffett Field, CA 94035, USA}
 
 
-\ead{todd.sedano@sv.cmu.edu}
-\ead{cecile.peraire@sv.cmu.edu}
 
 \begin{abstract}
-The SEMAT community created the Essence Kernel as a unifying framework for describing and analyzing software engineering endeavors. \cite{JacobsonQueue} The Essence Kernel is based upon human experience and judgement, not empirical data. 
+The Software Engineering Method and Theory (SEMAT) community created the Essence kernel as a unifying framework for describing and analyzing software engineering endeavors. \cite{JacobsonQueue} The Essence kernel is based upon human experience and judgement, not empirical data. 
 
-Background: At Carnegie Mellon University in Silicon Valley, we have collected data from masters of science in software engineering students as they complete a team-based project course as their capstone or practicum project. Each week, the team records their progress in an Essence Reflection meeting \cite{EASE2014}. This data serves as training data for evaluating the Essence Kernel and alternative candidate kernels.
+Background: At Carnegie Mellon University in Silicon Valley, we have collected data from masters of science in software engineering students as they complete a team-based project course as their capstone or practicum project using the Essence kernel. Each week, the team recorded their progress in an Essence Reflection meeting \cite{EASE2014}. This data serves as training data for evaluating the Essence kernel and alternative candidate kernels.
 
-Objective: Optimize candidate replacement kernels by using a fitness function based on empirical data in order to improve the Essence Kernel.
+Objective: Optimize candidate replacement kernels by using a fitness function based on empirical data in order to improve the Essence kernel.
 
-Method: Using genetic programming, the kernel genotype will be represented as a collection of linear state machines each with a collection of unique checklist items. Operations to evolve the genotypes include randomly moving checklist items, splitting states, and deleting states by moving their checklist items to other states. 
+Method: Using genetic programming, the kernel genotype is represented as a collection of linear state machines each with a collection of unique checklist items. Operations to evolve the genotypes include randomly moving checklist items, splitting states, and deleting states by moving their checklist items to other states. 
 
-Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence Kernel. Reducing the Essence Kernel from seven alphas to one alpha results in higher scores.
+Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence kernel. Reducing the Essence kernel from seven alphas to one alpha results in higher scores.
 
 Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
 
@@ -152,22 +154,22 @@ The Essence kernel is composed of a set of alphas, alpha states, and alpha state
 \caption{Kernel's linear state machine for Requirements alpha}\label{StateMachine}
 \end{figure}
 
-When the SEMAT community created the Essence Kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
+When the SEMAT community created the Essence kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
 
-We leverage empirical data to both evaluate possible candidate kernels. During the Spring 2014 and Summer 2014 semesters, graduate software engineering students at Carnegie Mellon University in Silicon Valley recorded their progress during their software engineering practicum course. Each team recorded which checklist items the team accomplished during their weekly Essence Reflection meetings. 
+We leverage empirical data to both evaluate possible candidate kernels. During the Spring 2014 and Summer 2014 semesters, graduate software engineering students at Carnegie Mellon University in Silicon Valley recorded their progress during their software engineering practicum course. Each team recorded which checklist items the team accomplished during their weekly Essence Reflection meetings. \cite{EASE2014}
 
-% \textbf{Goal 2:} Using a genetic algorithm, make small incremental improvements to the Essence Kernel.
+% \textbf{Goal 2:} Using a genetic algorithm, make small incremental improvements to the Essence kernel.
 
 \section{Experiment Planning}
 \subsection{Optimization Goal}
 \label{Optimization Application}
-The goal is the optimization of candidate kernels using a fitness function based on empirical data in order to create an alternative Essence Kernel. This is not a real time problem such as stock market analysis requiring highly performing input to output calculations.
+The goal is the optimization of candidate kernels using a fitness function based on empirical data in order to create an alternative Essence kernel. This is not a real time problem such as stock market analysis requiring highly performing input to output calculations.
 
 % The optimization problem of \textbf{Goal 1} means finding a single better candidate grounded in the data as described in Table~\ref{Goal of Program}. 
 
 \subsection{Genotype Data Structure}
 
-Creating a candidate kernel requires a permutation of 148 checklist items into states in different alphas, optimized by a fitness function.
+Creating a candidate kernel requires a permutation of the kernel's 148 checklist items into states in different alphas, optimized by a fitness function.
 
 % \begin{table}[h]
 % \caption{Genetic Algorithm's Purpose}
@@ -183,24 +185,35 @@ Creating a candidate kernel requires a permutation of 148 checklist items into s
 % \end{tabular}
 % \end{table}
 
-We first determine the data structure for the genetic algorithm. Since each alpha is a linear state machine, a simple representation for an alpha is: 
-\begin{verbatim}
-alpha: [state1, state2, ... state6] 
-\end{verbatim}
+% We first determine the data structure for the genetic algorithm. Since each alpha is a linear state machine, a simple representation for an alpha is: 
+% \begin{verbatim}
+% alpha: [state1, state2, ... state6] 
+% \end{verbatim}
 
-Since each state is a collection of checklist items, and each checklist item is a unique identifier, an alpha becomes:
+% Since each state is a collection of checklist items, and each checklist item is a unique identifier, an alpha becomes:
 
-\begin{verbatim}
-alpha: [{11,5,8}, {6}, ... {7,10,9,52}]
-\end{verbatim}
+% \begin{verbatim}
+% alpha: [{5,8,11}, {6}, ... {7,9,10,52}]
+% \end{verbatim}
 
-A kernel of many alphas can thus be represented by:
+% A kernel of many alphas can thus be represented by:
+
+% \begin{verbatim}
+% kernel = {
+%   alpha_1: [{5,8,11}, {6}, ... {7,9,10,52}],
+%   alpha_2: [{42,57,58}, {32,35}],
+%   alpha_3: [...]
+%   ...
+% }
+% \end{verbatim}
+
+We first determine the data structure for the genetic algorithm. Since each alpha is a linear state machine and each state is a collection of checklist items, and each checklist item is a unique identifier, a kernel of many alphas can be represented by:
 
 \begin{verbatim}
 kernel = {
-  alpha: [{11,5,8}, {6}, ... {7,10,9,52}],
-  alpha: [{57,58,42}, {32,35}],
-  alpha: [...]
+  alpha_1: [{5,8,11}, {6}, ... {7,9,10,52}],
+  alpha_2: [{42,57,58}, {32,35}],
+  alpha_3: [...]
   ...
 }
 \end{verbatim}
@@ -212,9 +225,9 @@ This data structure serves as the genetic algorithm's genotype. As the genetic a
 
 Given the genotype representation, we created a genetic program as described in Table~\ref{TechnicalSummary} that has mutation operators uniquely tailored to the representation.
 
-Genetic algorithms typically initialize a population of random candidate solutions (also known as individuals). In this case each member of the population is a candidate kernel. The code initializes the kernel with a random number of states per alpha and then distributes the 148 checklist items randomly to the states. 
+Genetic algorithms typically initialize a population of random candidate solutions (also known as individuals). In this case each member of the population is a candidate kernel. The code initializes the kernel with a random number of states per alpha and then distributes the 148 checklist items randomly to the states. The population size initialized to 40 members.
 
-Once initialized, genetic algorithms typically run for a number of generations until either the population stabilizes or a fixed number of generations have passed. During each generation, a genetic algorithm copies and alters each member of the population to create offspring. Our genetic program utilized deterministic parent selection where every member of the population would create one offspring. Given the uniqueness of the data structure, instead of typical mutation and crossover operators, we created specific operators to randomly alter the distribution of checklist items. For each member of the population, a random number determined which mutation operator would be used. The weights are arbitrary and future research can determine the ideal frequency ratios for the operators.
+Once initialized, genetic algorithms typically run for a number of generations until either the population stabilizes or a fixed number of generations have passed. During each generation, a genetic algorithm copies and alters each member of the population to create offspring. Our genetic program utilized deterministic parent selection where every member of the population would create one offspring. Given the uniqueness of the data structure, instead of typical mutation and crossover operators, we created specific operators to randomly alter the distribution of checklist items. For each member of the population, a random number determined which mutation operator would be used. The weights are arbitrary and future research can determine the ideal frequency ratios for the operators. 
 
 \begin{itemize}
 \item ``Move checklist item" operator randomly selects a checklist item and moves it to a different state. If the new state has more than eight checklist items, the code automatically splits that state into two states using the ``split state" operator. The genetic program choose this operator 80\% of the time.
@@ -367,12 +380,12 @@ In retrospect, completion is not an ideal fitness function. Since genetic algori
 We conducted a series of experimental runs by setting the initial population so that all candidates start with the same number of alphas. We inspected the population after the algorithm has run for a number of generations to see how the number of alphas affects the fitness score. Note that the current set of operators can not alter the number of alphas.
 
 \begin{table}[h]
-\caption{Number of Alphas and Fitness Scores}
+\caption{Number of Alphas and Fitness Scores for Partial Orderinr}
 \label{NumberOfAlphas}
 \centering
 \begin{tabular}{|l|r|r|}
 \hline
-Number of Alphas & \multicolumn{2}{c|}{Partial Ordering} \\ \hline
+Number of Alphas & \multicolumn{2}{c|}{Fitness Score} \\ \hline
                  & Gen 0            & Gen 200            \\ \hline
 { 1 } & { 58606 } & { 78530 } \\ \hline
 { 2 } & { 30540 } & { 70452 } \\ \hline
@@ -410,7 +423,7 @@ alpha 8 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
 
 For the Partial Ordering fitness function, initializing the population to a single alpha results in the most fit candidates. 
 
-Given this result, the genetic algorithm challenges us to consider the unthinkable, creating an essence kernel with a single alpha. The original kernel is arranged into seven alphas based upon human constructs of software systems, yet this might not be ideal for Essence Reflection meetings. During Essence Reflection meetings, a team considers possible next goals to accomplish. With seven alphas, team members must consider a significant number of checklist items. With a single alpha, a team could simply consider a limited set of next possible goals. Imagine a team meeting with the perfect oracle, once describing their current state, the oracle could suggest several possible goals informed by the collective experience of previous teams. Creating such an oracle may require a fundamental shift in the data representation of the Essence kernel.
+Given this result, the genetic algorithm challenges us to consider creating an Essence kernel with a single alpha. The original kernel is arranged into seven alphas based upon human constructs of software systems, yet this might not be ideal for Essence Reflection meetings. During Essence Reflection meetings, a team considers possible next goals to accomplish. With seven alphas, team members must consider a significant number of checklist items. With a single alpha, a team could simply consider a limited set of next possible goals. Imagine a team meeting with the perfect oracle, once describing their current state, the oracle could suggest several possible goals informed by the collective experience of previous teams. Creating such an oracle may require a fundamental shift in the data representation of the Essence kernel.
 
 \subsection{How do the mutation operators affect the fitness scores?}
 As another experiment, we ran 40 runs for five generations to see the impact of each operator on fitness score. By limiting to early generations, there is still plenty of opportunity for large changes in fitness. During each run, the program records the fitness differential before and after applying an operator. Figure ~\ref{OperatorsPartialOrdering} plots the distribution of fitness deltas per mutation operator.
@@ -512,7 +525,7 @@ State 2 & Opportunity addresses problem and stakeholder needs & Opportunity & 2.
 
 \underline{Generalizability across situations}: the collected data is from faculty facilitating Essence Reflection meetings \cite{EASE2014} with masters of software engineering teams during their final practicum project at Carnegie Mellon University in Silicon Valley. This empirical data, and thus the results, may not represent teams in industry nor teams at other universities. Replicating the results from \cite{ICSE2014} would mitigate this threat.
 
-\underline{Limited amount of empirical data}: the collected data is from five teams collecting data every week during the duration of a fifteen week semester. As a result, the generated solutions might be over-optimized to the empirical data. Collecting more data will diminish this threat. The purpose of this work is to show initial results in applying genetic algorithms for fitting possible candidate kernels to empirical data, not to recommend a replacement for the original Essence Kernel. 
+\underline{Limited amount of empirical data}: the collected data is from five teams collecting data every week during the duration of a fifteen week semester. As a result, the generated solutions might be over-optimized to the empirical data. Collecting more data will diminish this threat. The purpose of this work is to show initial results in applying genetic algorithms for fitting possible candidate kernels to empirical data, not to recommend a replacement for the original Essence kernel. 
 
 \section{Conclusions and Future Work}
 
