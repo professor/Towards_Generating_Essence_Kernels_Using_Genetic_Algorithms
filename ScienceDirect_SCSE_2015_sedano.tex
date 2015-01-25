@@ -175,15 +175,19 @@
 \author{C\'ecile P\'eraire}
 \ead{cecile.peraire@sv.cmu.edu}
 
+\author{Jason Long}
+\ead{jason.long@sv.cmu.edu}
+
+
 \address{Carnegie Mellon University}
 \address{Silicon Valley Campus}
 \address{Moffett Field, CA 94035, USA}
 
 
 \begin{abstract}
-The Software Engineering Method and Theory (SEMAT) community created the Essence kernel as a unifying framework for describing and analyzing software engineering endeavors. \cite{JacobsonQueue} The Essence kernel is based upon human experience and judgement, not empirical data. 
+The Software Engineering Method and Theory (SEMAT) community created the Essence kernel as a unifying framework for describing and analyzing software engineering endeavors. The Essence kernel is based upon human experience and judgement, not empirical data. 
 
-Background: At Carnegie Mellon University in Silicon Valley, we have collected data from masters of science in software engineering students as they complete a team-based project course as their capstone or practicum project using the Essence kernel. Each week, the team recorded their progress in an Essence Reflection meeting \cite{EASE2014}. This data serves as training data for evaluating the Essence kernel and alternative candidate kernels.
+Background: At Carnegie Mellon University in Silicon Valley, we have collected data from masters of science in software engineering students as they complete a team-based project course as their capstone or practicum project using the Essence kernel. Each week, the team recorded their progress in an Essence Reflection meeting. This data serves as training data for evaluating the Essence kernel and alternative candidate kernels.
 
 Objective: Optimize candidate replacement kernels by using a fitness function based on empirical data in order to improve the Essence kernel.
 
@@ -219,19 +223,23 @@ The Essence kernel is composed of a set of alphas, alpha states, and alpha state
  
 \begin{figure}[h]\vspace*{4pt}
 \centerline{\includegraphics[width=5.4in]{kernel_images/StateMachineRequirements}}
-\caption{Kernel's linear state machine for Requirements alpha}\vspace*{-6pt}\label{StateMachine}
+\caption{Kernel's linear state machine for Requirements alpha (with Fulfilled Checklist)}\vspace*{-6pt}\label{StateMachine}
 \end{figure}
 
 When the SEMAT community created the Essence kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
 
-We leverage empirical data to both evaluate possible candidate kernels. During the Spring 2014 and Summer 2014 semesters, graduate software engineering students at Carnegie Mellon University in Silicon Valley recorded their progress during their software engineering practicum course. Each team recorded which checklist items the team accomplished during their weekly Essence Reflection meetings. \cite{EASE2014}
+We propose to leverage genetic algorithms to explore this possibility. Genetic algorithms explore a search space by initially choosing random spaces in the search space and iteratively try to locate more optimal solutions through random permutations of search space parameters. Given the stochastic nature of the process, multiple runs are recommended before making conclusions about observations.
+
+We leverage empirical data to evaluate possible candidate kernels. During the Spring 2014 and Summer 2014 semesters, graduate software engineering students at Carnegie Mellon University in Silicon Valley recorded their progress during their software engineering practicum course. The study includes five student teams, including geographically distributed and co-located
+teams. Each team worked on creating or evolving a software solution for a different industry client such as an electric car fleet management system or a survivable social network. By design, the projects had a medium to high level of technical complexity, as they often involved multiple technologies, platforms, or integration with legacy systems. The practicum
+projects ran for 15 weeks, during which each student dedicated about 20 hours per week to the project. Students worked in teams of two to five members. Teams determined their own software development approach. Most students had a few years of professional software development experience and were familiar with common software engineering practices. All projects adopted an iterative lifecycle. Each team recorded which checklist items the team accomplished during their weekly Essence Reflection meetings \cite{EASE2014}.
 
 % \textbf{Goal 2:} Using a genetic algorithm, make small incremental improvements to the Essence kernel.
 
 \section{Experiment Planning}
 \subsection{Optimization Goal}
 \label{Optimization Application}
-The goal is the optimization of candidate kernels using a fitness function based on empirical data in order to create an alternative Essence kernel. This is not a real time problem such as stock market analysis requiring highly performing input to output calculations.
+The goal is the optimization of candidate kernels using a fitness function based on empirical data in order to create an alternative Essence kernel. This is not a real time problem such as stock market analysis requiring highly performing input to output calculations. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence kernel.
 
 % The optimization problem of \textbf{Goal 1} means finding a single better candidate grounded in the data as described in Table~\ref{Goal of Program}. 
 
@@ -291,7 +299,7 @@ This data structure serves as the genetic algorithm's genotype. As the genetic a
 \subsection{Evolutionary Algorithm}
 \label{Evolutionary Algorithm}
 
-Given the genotype representation, we created a genetic program as described in Table~\ref{TechnicalSummary} that has mutation operators uniquely tailored to the representation.
+Given the genotype representation, we created a genetic program \cite{GithubGeneticAlgorithm} as described in Table~\ref{TechnicalSummary} that has mutation operators uniquely tailored to the representation.
 
 Genetic algorithms typically initialize a population of random candidate solutions (also known as individuals). In this case each member of the population is a candidate kernel. The code initializes the kernel with a random number of states per alpha and then distributes the 148 checklist items randomly to the states. The population size initialized to 40 members.
 
@@ -300,10 +308,10 @@ Once initialized, genetic algorithms typically run for a number of generations u
 \begin{itemize}
 \item ``Move checklist item" operator randomly selects a checklist item and moves it to a different state. If the new state has more than eight checklist items, the code automatically splits that state into two states using the ``split state" operator. The genetic program choose this operator 80\% of the time.
 \item ``Split state" operator randomly selects a state and subdivides it by creating a new subsequent state and moves half of the checklist items to the new state. The genetic program choose this operator 10\% of the time.
-\item ``Delete state" operator randomly deletes a state by moving all of its checklist items to other states. The genetic program choose this operator 10\% of the time.
+\item ``Delete state" operator randomly deletes a state by moving all of its checklist items randomly to other states. The genetic program choose this operator 10\% of the time.
 \end{itemize}
 
-Once all of the offspring are created, the code implements ``comma survivor selection" by adding each offspring to the population pool, sorting the parents and offspring together, and retaining only the top 50\% of the combined population. This is also known as elitism as the population can only increase its fitness scores. The code would terminate once 500 generations had been created.
+Once all of the offspring are created, the code implements ``comma survivor selection" by adding each offspring to the population pool, sorting the parents and offspring together, and retaining only the top 50\% of the combined population measured by their fitness scores. This is also known as elitism as the population can only increase its fitness scores. The code would terminate once 500 generations had been created.
 
 % \begin{table}[h]
 % \caption{Evolutionary Algorithm Technical Summary}
@@ -361,9 +369,9 @@ When considering a given week's worth of data for a team, the Partial Ordering f
 
 % For a given week \textit{i}, we do know that there is a partial ordering between the data before week \textit{i}, week \textit{i}, and the data after week \textit{i}. Consider Week 3 of Figure ~\ref{delta}, we know that all the checklist items that happened before {1, 10, 21} and all the checklist items that happened after {1, 10, 21}. We can reward candidate solutions that respect this partial ordering.
 
-\subsubsection{Partial Ordering Example}
+% \subsubsection{Partial Ordering Example}
 
-During weekly Essence Reflection meetings, the team records its progress across every alpha by reviewing checklist items ~\cite{ICSE2014}. Figure ~\ref{history} shows the progression of a hypothetical team through the checklists.
+Let us look at an example. During weekly Essence Reflection meetings, the team records its progress across every alpha by reviewing checklist items ~\cite{ICSE2014}. Figure ~\ref{history} shows the progression of a hypothetical team through the checklists.
 
 \begin{figure}[!htb]
 \begin{verbatim}
@@ -389,34 +397,34 @@ kernel = {
  \label{sequential_candidate}
 \end{figure}
 
-Partial Ordering gives a point to the candidate for correctly matching the time sequence of the data. For illustrative purposes, consider the evaluation of Week 2 using the data in Figure ~\ref{history}. The team accomplished the checklist items in Week 1 before accomplishing the checklist items in Week 2. Thus Partial Ordering considers if the candidate has the checklist items for Week 1 occurring before Week 2. The fitness function checks the candidate to see if 5 and 8 precede 6, 7, 11, and 20. Then, Partial Ordering compares if the candidate has the checklist items for Week 2 occurring prior to Week 3. The fitness function examines if 6, 7, 11, and 20 precede 1, 20, 21. While comparing the empirical data against the candidate solution, the candidate represents some, but not all of this behavior. Partial Ordering follows this procedure for the all weeks of the project for every team in the empirical data set. %Figure ~\ref{evaluation_example} describes each step.
-%Whenever the model correctly represents the empirical data, it earns a point. Candidate solutions that score the most points best represent the empirical data.
+Partial Ordering gives a point to the candidate for correctly matching the time sequence of the data. For illustrative purposes, consider the evaluation of Week 2 using the data in Figure ~\ref{history}. The team accomplished the checklist items in Week 1 before accomplishing the checklist items in Week 2. Thus Partial Ordering considers if the candidate has the checklist items for Week 1 occurring before Week 2. The fitness function checks the candidate to see if 5 and 8 precede 6, 7, 11, and 20 in pairwise combinations. Then, Partial Ordering compares if the candidate has the checklist items for Week 2 occurring prior to Week 3. The fitness function examines if 6, 7, 11, and 20 precede 1, 10, 21. While comparing the empirical data against the candidate solution, the candidate represents some, but not all of this behavior. Partial Ordering follows this procedure for the all weeks of the project for every team in the empirical data set. Figure ~\ref{evaluation_example} describes each step.
+Whenever the model correctly represents the empirical data, it earns a point. Candidate solutions that score the most points best represent the empirical data.
 
-% \begin{figure}[!htb]
-% \begin{verbatim}
-% # Compare earlier checklists (5, 8)     # Compare later checklists (1, 10, 21)
-% # against current week                  # against current week
+\begin{figure}[!htb]
+\begin{verbatim}
+# Compare earlier checklists (5, 8)     # Compare later checklists (1, 10, 21)
+# against current week                  # against current week
 
-% 5 before? 6 => yes                      6 before? 1 => no
-% 8 before? 6 => no                       6 before? 10 => yes
-%                                         6 before? 21 => yes
-% 5 before? 7 => yes                  
-% 8 before? 7 => no                       7 before? 1 => no
-%                                         7 before? 10 => yes
-% 5 before? 11 => yes                     7 before? 21 => yes
-% 8 before? 11 => yes                     
-%                                         11 before? 1 => no 
-% 5 before? 20 => yes                     11 before? 10 => yes
-% 8 before? 20 => yes                     11 before? 21 => yes
+5 before? 6 => yes                      6 before? 1 => no
+8 before? 6 => no                       6 before? 10 => yes
+                                        6 before? 21 => yes
+5 before? 7 => yes                  
+8 before? 7 => no                       7 before? 1 => no
+                                        7 before? 10 => yes
+5 before? 11 => yes                     7 before? 21 => yes
+8 before? 11 => yes                     
+                                        11 before? 1 => no 
+5 before? 20 => yes                     11 before? 10 => yes
+8 before? 20 => yes                     11 before? 21 => yes
                                         
-%                                         20 before? 1 => no
-%                                         20 before? 10 => yes
-%                                         20 before? 21 => yes
-% Score: 14 / 20 for week 2
-% \end{verbatim}
-%  \caption{Partial Ordering Evaluation Example for Week 2}
-%  \label{evaluation_example}
-% \end{figure}
+                                        20 before? 1 => no
+                                        20 before? 10 => yes
+                                        20 before? 21 => yes
+Score: 14 / 20 for week 2
+\end{verbatim}
+ \caption{Partial Ordering Evaluation Example for Week 2}
+ \label{evaluation_example}
+\end{figure}
 
 % \subsubsection{Psuedocode}
 % Figure \ref{psuedocode} shows the psuedocode for evaluating a candidate solution against the empirical data. The running time of the algorithm is O(t * m * k * k) where
@@ -464,7 +472,7 @@ In retrospect, completion is not an ideal fitness function. Since genetic algori
 % \end{itemize}
 
 \subsection{How does the number of alphas affect the fitness scores?}
-We conducted a series of experimental runs by setting the initial population so that all candidates start with the same number of alphas. We inspected the population after the algorithm has run for a number of generations to see how the number of alphas affects the fitness score. Note that the current set of operators can not alter the number of alphas.
+We conducted a series of experimental runs by setting the initial population so that all candidates start with the same number of alphas. We inspected the population after the algorithm has run for a number of generations to see how the number of alphas affects the fitness score. Note that the current set of operators can not alter the number of alphas, only the number of states in each alpha.
 
 % \begin{table}[h]
 % \caption{Number of Alphas and Fitness Scores for Partial Ordering}
@@ -472,7 +480,7 @@ We conducted a series of experimental runs by setting the initial population so 
 % \centering
 % \begin{tabular}{|l|r|r|}
 % \hline
-% Number of Alphas & \multicolumn{2}{c|}{Fitness Score} \\ \hline
+% Initial Number of Alphas & \multicolumn{2}{c|}{Fitness Score} \\ \hline
 %                  & Gen 0            & Gen 200            \\ \hline
 % { 1 } & { 58606 } & { 78530 } \\ \hline
 % { 2 } & { 30540 } & { 70452 } \\ \hline
@@ -490,7 +498,7 @@ We conducted a series of experimental runs by setting the initial population so 
 \label{NumberOfAlphas}
 \begin{tabular}{lrr}
 \hline
-Number of Alphas & \multicolumn{2}{c}{Fitness Score}     \\
+Initial Number of Alphas & \multicolumn{2}{c}{Fitness Score}     \\
                  & Gen 0            & Gen 200            \\ \hline
 { 1 } & { 58606 } & { 78530 } \\ 
 { 2 } & { 30540 } & { 70452 } \\ 
@@ -528,7 +536,7 @@ When initialized to a larger number of alphas, the genetic algorithm will discov
 % \end{table*}
 
 \begin{table*}
-\caption{Number of Checklist Items Per State Per Alpha}
+\caption{Number of Checklist Items per State per Alpha after 200 Generations when Starting with Eight alphas}
 \label{PartialOrderingPrefersLessAlphas}
 \begin{tabular}{llllllllllllllll}
 \hline
@@ -545,13 +553,21 @@ alpha 8 &   &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\ \hline
 \end{tabular}
 \end{table*}
 
+The graph in Fig ~\ref{NumberOfAlphasPartialOrdering} shows the  number of utilized alphas for 500 generations when initialized with eight alphas over 40 runs. The average number of utilized alphas shows that candidates starting with eight alphas evolve to use less alphas with partial ordering. The most optimal candidate uses one alpha. 
+The maximum number of alphas means that across 40 runs of the code, there is at least one member of the population that is able to survive using 6-8 alphas. 
+
+\begin{figure}[ht]\vspace*{4pt}
+\centerline{\includegraphics[width=6.25in]{images/number_of_alphas_partial_ordering_500gens_40runs_8alpha}}
+\caption{Partial Ordering`s Utilization of Number of Alphas}\vspace*{-6pt}
+\label{NumberOfAlphasPartialOrdering}
+\end{figure}
 
 For the Partial Ordering fitness function, initializing the population to a single alpha results in the most fit candidates. 
 
 Given this result, the genetic algorithm challenges us to consider creating an Essence kernel with a single alpha. The original kernel is arranged into seven alphas based upon human constructs of software systems, yet this might not be ideal for Essence Reflection meetings. During Essence Reflection meetings, a team considers possible next goals to accomplish. With seven alphas, team members must consider a significant number of checklist items. With a single alpha, a team could simply consider a limited set of next possible goals. Imagine a team meeting with the perfect oracle, once describing their current state, the oracle could suggest several possible goals informed by the collective experience of previous teams. Creating such an oracle may require a fundamental shift in the data representation of the Essence kernel.
 
 \subsection{How do the mutation operators affect the fitness scores?}
-As another experiment, we ran 40 runs for five generations to see the impact of each operator on fitness score. By limiting to early generations, there is still plenty of opportunity for large changes in fitness. During each run, the program records the fitness differential before and after applying an operator. Figure ~\ref{OperatorsPartialOrdering} plots the distribution of fitness deltas per mutation operator.
+As another experiment, we examined the impact of each operator on fitness score during the first five generations of a run. By limiting to early generations, there is still plenty of opportunity for large changes in fitness. The program records the fitness differential before and after applying an operator. Figure ~\ref{OperatorsPartialOrdering} plots the distribution of fitness deltas per mutation operator averaged over 40 runs. The width represents the frequency distribution.
 
 \begin{figure}[ht]\vspace*{4pt}
 \centerline{\includegraphics[width=4.0in]{images/operator_analysis_partial_order_first_5_gens}}
@@ -561,12 +577,14 @@ As another experiment, we ran 40 runs for five generations to see the impact of 
 
 \begin{itemize}
   \item ``move checklist" typically has the smallest impact on the fitness scores. Most of the distribution is tightly centered around zero. This operator is great for fine tuning a well established structure. 
-  \item ``move checklist and split state" occurs when ``move checklist" adds a  checklist to a state that already has eight, causing an automatic split to happen. The distribution is similar to ``split state."
   \item ``split state" is a more ``destructive" operator to the data structure and has a wider range of impact than ``move checklist"
+  \item ``move checklist and split state" occurs when ``move checklist" adds a  checklist to a state that already has eight, causing an automatic split to happen. The distribution is similar to ``split state."
   \item ``delete state" causes the most change to the data structure and has the largest impact on fitness scores. 
 \end{itemize}
 
-The mean of all of these mutation operators is slightly negative. As with most genetic algorithms, applying any operator can cause a fitness score decrease and the offspring will eventually be discarded when the population surpasses it.
+The mean of all of these mutation operators is slightly negative. As with most genetic algorithms, applying any operator can cause a fitness score decrease and the offspring will eventually be discarded when the population surpasses it. 
+
+Given this analysis, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure.
 
 % \subsection{How does the algorithm utilize states?}
 
@@ -580,7 +598,7 @@ The mean of all of these mutation operators is slightly negative. As with most g
 
 \section{Best Generated Candidate Kernel}
 
-Given that the Partial Ordering fitness function prefers smaller number of alphas, the best scoring candidates emerge quickly when starting with only a single alpha. Figure ~\ref{BestResultsPartialOrdering} shows the best, average, and worst fitness scores over 500 generations for 40 runs. (These 40 runs completed in 12.65 hours.) The graph also plots the fitness score of the original kernel.
+Given that the Partial Ordering fitness function prefers smaller number of alphas, the best scoring candidates emerge quickly when starting with only a single alpha. Figure ~\ref{BestResultsPartialOrdering} shows the best, average, and worst fitness scores over 500 generations for 40 runs completed in 12.6 hours. The graph also plots the fitness score of the original kernel.
 
 The original kernel scores 13,372. The best generated kernel scores 85,122. For the Partial Ordering fitness function, the genetic algorithm had little difficulty in finding random solutions that score higher than the original kernel. The original kernel is optimized for human understanding and places 148 checklist items into logical sequences around themed alphas where as the candidate kernels are optimized around how teams actually flow through the checklist items.
 
@@ -592,7 +610,7 @@ The original kernel scores 13,372. The best generated kernel scores 85,122. For 
 
 Table ~\ref{BestResults} shows the beginning two states for the final candidate which is a single alpha with 30 sequential states. The states contain a mixture of checklist items from different alphas. The candidate interweaves alphas into one flow based upon how teams accomplished the checklist items in practice. 
 
-The generated kernel revealed that several checklists items that occur later in the original kernel often happen earlier on real projects. For example, the generated kernel places ``Team values stakeholders representatives' input" in the second state. Likewise, several checklist items that occur early in the original kernel often happen later on real projects. For example, the generated kernel places ``Defect levels are acceptable" in the second to last state. In future work, more analysis can be done with sufficient number of teams.
+The generated kernel revealed that several checklists items that occur later in the original kernel often happen earlier on real projects. For example, the generated kernel places ``Team values stakeholders representatives' input" in the second state instead of the fourth state. Likewise, several checklist items that occur early in the original kernel often happen later on real projects according to the limited data. For example, the generated kernel places ``Defect levels are acceptable" in the second to last state instead of the third state. In future work, more analysis can be done with sufficient number of teams.
 
 % \begin{table}[h]
 % \caption{Highest Scoring Essence Kernel Generated By Genetic Algorithm}
@@ -672,6 +690,8 @@ State 2 & Opportunity addresses problem and stakeholder needs & Opportunity & 2.
 
 \underline{Limited amount of empirical data}: the collected data is from five teams collecting data every week during the duration of a fifteen week semester. As a result, the generated solutions might be over-optimized to the empirical data. Collecting more data will diminish this threat. The purpose of this work is to show initial results in applying genetic algorithms for fitting possible candidate kernels to empirical data, not to recommend a replacement for the original Essence kernel. 
 
+\underline{Limitation of fitness function}: this paper examined two  fitness functions for scoring candidate kernels. Further research is necessary to investigate other fitness functions with different properties than the Partial Ordering and Completion fitness functions.
+
 \section{Conclusions and Future Work}
 
 This paper describes how a genetic algorithm created random kernels using two different fitness functions. The candidate kernels have the same fundamental structure as the original Essence kernel: a collection of linear state machines called alphas with each state having a set of checklist items. 
@@ -684,7 +704,7 @@ The best generated random kernel scores higher than the original Essence kernel.
 
 Optimizations to the original Essence kernel are possible. Using the same code base, a greedy optimization algorithm altered the original Essence kernel and revealed that several states could be combined and several checklist items could move to better represent the empirical data collected so far.
 
-As for next steps, collecting more empirical data will yield more reliable results and better insights. %Future research includes considering an ALPS strategy \cite{ALPS} of age-based population pools. 
+As for next steps, collecting more empirical data will yield more reliable results and better insights. Future research includes considering an ALPS strategy \cite{ALPS} of age-based population pools. 
 Given the mutation operator analysis on fitness, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure. Additional research can experiment with how population size and weights of operators affect the genetic algorithm's performance. %Additional experiments could consider altering the fitness function to have other desirable kernel properties such as limiting number of states or requiring a minimum number of alphas to be used.
 
 In conclusion, genetic algorithms explore the kernel search space through random mutations. Given the human desire for order, the computer can consider solutions that people might immediately dismiss as not meeting certain aesthetic considerations. By considering these unusual solutions, the computer can further optimize the solution to achieve higher scoring candidate kernels. 
