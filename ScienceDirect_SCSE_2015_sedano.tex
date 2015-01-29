@@ -175,8 +175,8 @@
 \author{C\'ecile P\'eraire}
 \ead{cecile.peraire@sv.cmu.edu}
 
-\author{Jason Long}
-\ead{jason.long@sv.cmu.edu}
+\author{Jason Lohn}
+\ead{jason.lohn@sv.cmu.edu}
 
 
 \address{Carnegie Mellon University}
@@ -193,7 +193,7 @@ Objective: Optimize candidate replacement kernels by using a fitness function ba
 
 Method: Using genetic programming, the kernel genotype is represented as a collection of linear state machines each with a collection of unique checklist items. Operations to evolve the genotypes include randomly moving checklist items, splitting states, and deleting states by moving their checklist items to other states. 
 
-Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to show one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence kernel. Reducing the Essence kernel from seven alphas to one alpha results in higher scores.
+Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to demonstrate one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence kernel. Reducing the Essence kernel from seven alphas to one alpha results in higher scores.
 
 Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
 
@@ -228,7 +228,7 @@ The Essence kernel is composed of a set of alphas, alpha states, and alpha state
 
 When the SEMAT community created the Essence kernel, they relied upon human experience and judgment to select the alphas, states, and checklists. Essence is not grounded by empirical data. There might be other possible groupings of checklist items that are more effective which we might not normally consider because they do not match our preconceived notions of structure and order.
 
-We propose to leverage genetic algorithms to explore this possibility. Genetic algorithms explore a search space by initially choosing random spaces in the search space and iteratively try to locate more optimal solutions through random permutations of search space parameters. Given the stochastic nature of the process, multiple runs are recommended before making conclusions about observations.
+We propose to leverage genetic algorithms to explore this possibility. Genetic algorithms explore a search space by initially choosing random spaces in the search space and iteratively try to locate more optimal solutions through random permutations of search space parameters. Given the stochastic nature of the process, multiple runs are recommended before making conclusions about observations \cite{Goldberg1989, Holland1992}.
 
 We leverage empirical data to evaluate possible candidate kernels. During the Spring 2014 and Summer 2014 semesters, graduate software engineering students at Carnegie Mellon University in Silicon Valley recorded their progress during their software engineering practicum course. The study includes five student teams, including geographically distributed and co-located
 teams. Each team worked on creating or evolving a software solution for a different industry client such as an electric car fleet management system or a survivable social network. By design, the projects had a medium to high level of technical complexity, as they often involved multiple technologies, platforms, or integration with legacy systems. The practicum
