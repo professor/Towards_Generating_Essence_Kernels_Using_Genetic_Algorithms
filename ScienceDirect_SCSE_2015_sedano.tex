@@ -185,15 +185,15 @@
 
 
 \begin{abstract}
-The Software Engineering Method and Theory (SEMAT) community created the Essence kernel as a unifying framework for describing and analyzing software engineering endeavors. The Essence kernel is based upon human experience and judgement, not empirical data. 
+The Software Engineering Method and Theory (SEMAT) community created the Essence kernel as a unifying framework for describing and analyzing software engineering endeavors. The Essence kernel is based upon human experience and judgment, not empirical data. 
 
 Background: At Carnegie Mellon University in Silicon Valley, we have collected data from masters of science in software engineering students as they complete a team-based project course as their capstone or practicum project using the Essence kernel. Each week, the team recorded their progress in an Essence Reflection meeting. This data serves as training data for evaluating the Essence kernel and alternative candidate kernels.
 
-Objective: Optimize candidate replacement kernels by using a fitness function based on empirical data in order to improve the Essence kernel.
+Objective: Generate candidate replacement kernels by using a fitness function based on empirical data.
 
 Method: Using genetic programming, the kernel genotype is represented as a collection of linear state machines each with a collection of unique checklist items. Operations to evolve the genotypes include randomly moving checklist items, splitting states, and deleting states by moving their checklist items to other states. 
 
-Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to demonstrate one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence kernel. Reducing the Essence kernel from seven alphas to one alpha results in higher scores.
+Results: Genetic programming created random candidate essence kernels that scored higher fitness scores than the original essence kernel. The purpose of this exploratory work is to demonstrate one way to generate a candidate Essence kernel directly from empirical data, not to recommend a replacement for the original Essence kernel. Reducing the Essence kernel from seven alphas to one alpha results in higher fitness scores.
 
 Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
 
@@ -570,7 +570,7 @@ Given this result, the genetic algorithm challenges us to consider creating an E
 As another experiment, we examined the impact of each operator on fitness score during the first five generations of a run. By limiting to early generations, there is still plenty of opportunity for large changes in fitness. The program records the fitness differential before and after applying an operator. Figure ~\ref{OperatorsPartialOrdering} plots the distribution of fitness deltas per mutation operator averaged over 40 runs. The width represents the frequency distribution.
 
 \begin{figure}[ht]\vspace*{4pt}
-\centerline{\includegraphics[width=4.0in]{images/operator_analysis_partial_order_first_5_gens}}
+\centerline{\includegraphics[width=6.25in]{images/operator_analysis_partial_order_first_5_gens}}
 \caption{Mutation Operators Effect on Fitness Scores for Partial Ordering}\vspace*{-6pt}
 \label{OperatorsPartialOrdering}
 \end{figure}
@@ -584,7 +584,7 @@ As another experiment, we examined the impact of each operator on fitness score 
 
 The mean of all of these mutation operators is slightly negative. As with most genetic algorithms, applying any operator can cause a fitness score decrease and the offspring will eventually be discarded when the population surpasses it. 
 
-Given this analysis, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure.
+Given this analysis, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure with ``fine tuning" operators like ``move checklist."
 
 % \subsection{How does the algorithm utilize states?}
 
@@ -705,7 +705,7 @@ The best generated random kernel scores higher than the original Essence kernel.
 Optimizations to the original Essence kernel are possible. Using the same code base, a greedy optimization algorithm altered the original Essence kernel and revealed that several states could be combined and several checklist items could move to better represent the empirical data collected so far.
 
 As for next steps, collecting more empirical data will yield more reliable results and better insights. Future research includes considering an ALPS strategy \cite{ALPS} of age-based population pools. 
-Given the mutation operator analysis on fitness, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure. Additional research can experiment with how population size and weights of operators affect the genetic algorithm's performance. %Additional experiments could consider altering the fitness function to have other desirable kernel properties such as limiting number of states or requiring a minimum number of alphas to be used.
+Given the mutation operator analysis on fitness, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure. Additional research can experiment with how population size and weights of operators affect the genetic algorithm's performance. More research is also necessary to evaluate the suitability of different fitness functions. %Additional experiments could consider altering the fitness function to have other desirable kernel properties such as limiting number of states or requiring a minimum number of alphas to be used.
 
 In conclusion, genetic algorithms explore the kernel search space through random mutations. Given the human desire for order, the computer can consider solutions that people might immediately dismiss as not meeting certain aesthetic considerations. By considering these unusual solutions, the computer can further optimize the solution to achieve higher scoring candidate kernels. 
 
