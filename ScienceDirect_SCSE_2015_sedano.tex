@@ -197,7 +197,7 @@ Results: Genetic programming created random candidate essence kernels that score
 
 Limitations: Given the limited amount of data, the generated kernels may be over-optimized. Additional empirical data is required before recommending replacing the original kernel with a candidate kernel that fits the data.
 
-Conclusion: The original Essence kernel is highly structured around human notions of order. Genetic algorithms can generate candidate kernels that humans might not normally consider.
+Conclusion: The original Essence kernel is highly structured around human notions of order. Genetic algorithms can generate candidate kernels that humans might not normally consider. Based on the analysis of the fitness function, a kernel with a fundamentally different structure might more effectively recommend next steps for a team during Essence Reflection Meetings
 
 \end{abstract}
 
@@ -707,8 +707,7 @@ Optimizations to the original Essence kernel are possible. Using the same code b
 As for next steps, collecting more empirical data will yield more reliable results and better insights. Future research includes considering an ALPS strategy \cite{ALPS} of age-based population pools. 
 Given the mutation operator analysis on fitness, one strategy to consider is starting with operations that have large structural changes in younger populations, and then later optimizing checklists within a given structure. Additional research can experiment with how population size and weights of operators affect the genetic algorithm's performance. More research is also necessary to evaluate the suitability of different fitness functions. %Additional experiments could consider altering the fitness function to have other desirable kernel properties such as limiting number of states or requiring a minimum number of alphas to be used.
 
-In conclusion, genetic algorithms explore the kernel search space through random mutations. Given the human desire for order, the computer can consider solutions that people might immediately dismiss as not meeting certain aesthetic considerations. By considering these unusual solutions, the computer can further optimize the solution to achieve higher scoring candidate kernels. 
-
+In conclusion, genetic algorithms explore the kernel search space through random mutations. Given the human desire for order, the computer can consider solutions that people might immediately dismiss as not meeting certain aesthetic considerations. By considering these unusual solutions, the computer can further optimize the solution to achieve higher scoring candidate kernels. Based on the analysis of the fitness function, a kernel with a fundamentally different structure might more effectively recommend next steps for a team during Essence Reflection Meetings
 
 % Show this to Cecile
 
